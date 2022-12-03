@@ -1,0 +1,95 @@
+<div>
+  <div class="input-group">
+    <div class="form-outline d-flex align-items-center justify-content-center">
+      <input type="search" id="form1" class="form-control" placeholder="Filter name" [ngModel]="nameFilterValue"
+             (ngModelChange)="filterName($event)"/>
+      <input type="search" id="form2" class="form-control mx-1" placeholder="Filter description"
+             [ngModel]="descriptionFilterValue" (ngModelChange)="filterDescription($event)"/>
+
+      <input type="number" class="form-control w-25 mx-1" aria-label="Min" placeholder="Min" min="0"
+             [ngModel]="minPriceFilterValue" (ngModelChange)="filterMinPrice($event)"/>
+      <input type="number" class="form-control w-25" aria-label="Max" placeholder="Max" min="0"
+             [ngModel]="maxPriceFilterValue" (ngModelChange)="filterMaxPrice($event)"/>
+
+      <ngx-bootstrap-multiselect class="multi-select mx-2" [options]="categories" [(ngModel)]="optionsModel"
+                                 [settings]="mySettings"
+                                 (ngModelChange)="filterCategories($event)">
+      </ngx-bootstrap-multiselect>
+
+      <div ngbDropdown class="d-inline-flex">
+        <button type="button" class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>
+          {{ currentSorter.name }}
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem *ngFor="let sorter of sorters" (click)="sortWith(sorter)">{{sorter.name}}</button>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="container mb-5 product-list-container">
+  <div class="d-flex justify-content-center row">
+    <div class="col-md-10">
+      <ng-container *ngFor="let product of displayedProducts; let productIndex = index">
+        <div
+          [ngClass]="{'visually-hidden' : !(productIndex >= topProductIndex - 1 && productIndex < topProductIndex + maxProductPerPage - 1)}"
+          class="row p-2 bg-white border rounded">
+          <div class="col-md-9 mt-0">
+            <h5 class="text-truncate">{{product.name}}</h5>
+            <div class="mt-1 mb-1 spec-1">
+              <ng-container *ngFor="let category of product.categories; let categoryIndex = index">
+                <span>{{ category.name }}</span>
+                <span *ngIf="categoryIndex < product.categories.length - 1 " class="dot"></span>
+              </ng-container>
+            </div>
+            <p class="text-justify text-truncate para mb-0">{{product.description}}</p>
+          </div>
+          <div class="align-items-center align-content-center justify-item-center col-md-3 border-left mt-1">
+            <div class="d-flex flex-row justify-content-center align-items-center">
+              <h4>${{product.price}}</h4>
+            </div>
+            <div class="d-flex flex-row justify-content-center align-items-center text-truncate">
+              <h5>{{ product.shopName }}</h5>
+            </div>
+            <div class="d-flex flex-column">
+              <button class="btn btn-primary btn-sm btn-primary" type="button">Details</button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link border" [ngClass]="{'disabled': activePageNumber == 1}"
+         (click)="displayProductsPage(1)">First</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link border" [ngClass]="{'disabled': activePageNumber == 1}"
+         (click)="displayProductsPage(activePageNumber-1)">Previous</a>
+    </li>
+    <ng-container *ngFor="let item of [].constructor(visibleNavPages); let i = index">
+      <li class="page-item" [ngClass]="{'active' : activePageNumber == i + firstNavPage}">
+        <a class="page-link border" (click)="displayProductsPage(i + firstNavPage)">
+          {{ ((i + firstNavPage) / 10 >= 1 ? '' : '0') + (i + firstNavPage).toString()}}
+        </a>
+      </li>
+    </ng-container>
+    <li class="page-item">
+      <a class="page-link border" [ngClass]="{'disabled': activePageNumber >= totalNavPagesNumber}"
+         (click)="displayProductsPage(activePageNumber+1)">Next</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link border" [ngClass]="{'disabled': activePageNumber >= totalNavPagesNumber}"
+         (click)="displayProductsPage(totalNavPagesNumber)">Last</a>
+    </li>
+  </ul>
+</nav>

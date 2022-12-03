@@ -1,1 +1,21 @@
-/* You can add global styles to this file, and also import other style files */
+.btn-primary, .dropdown-menu {
+  --light-color: rgba(168, 218, 220, 255);
+  --main-color: rgba(69, 123, 157, 255);
+  --dark-color: rgba(29, 53, 87, 255);
+
+  --bs-btn-bg: var(--main-color) !important;
+  --bs-btn-border-color: var(--main-color) !important;
+  --bs-btn-hover-bg: var(--dark-color);
+  --bs-btn-hover-border-color: var(--dark-color);
+  --bs-btn-active-bg: var(--main-color);
+  --bs-btn-active-border-color: var(--main-color);
+  --bs-btn-disabled-bg: var(--dark-color);
+  --bs-btn-disabled-border-color: var(--dark-color);
+
+  --bs-dropdown-link-active-bg: var(--main-color);
+  --bs-dropdown-link-active-color: black;
+}
+
+input {
+  accent-color: var(--dark-color);
+}

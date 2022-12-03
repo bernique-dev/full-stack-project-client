@@ -1,0 +1,18 @@
+
+
+nav {
+  padding: 10px;
+}
+
+.page-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.top-navbar button {
+  color: var(--bs-navbar-brand-color);
+  text-decoration: none;
+}
+
