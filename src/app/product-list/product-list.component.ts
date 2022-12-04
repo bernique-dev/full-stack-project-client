@@ -6,6 +6,7 @@ import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
 import {CategoryService} from "../category.service";
 import {Category} from "../shared/category";
 import {IMultiSelectSettings} from "ngx-bootstrap-multiselect";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-product-list',
@@ -55,7 +56,7 @@ export class ProductListComponent implements OnInit {
   nameFilter = (p : Product) => this.nameFilterValue.length > 0 ? p.name.toUpperCase().includes(this.nameFilterValue.toUpperCase()) : true
   descriptionFilterValue : string = "";
   descriptionFilter = (p : Product) => this.descriptionFilterValue.length > 0 ? p.description.toUpperCase().includes(this.descriptionFilterValue.toUpperCase()) : true
-  minPriceFilterValue : number = 0;
+  minPriceFilterValue : number = -Infinity;
   maxPriceFilterValue : number = Infinity;
   priceFilter = (p: Product) => p.price >= this.minPriceFilterValue && p.price <= this.maxPriceFilterValue
 
@@ -75,12 +76,15 @@ export class ProductListComponent implements OnInit {
     dynamicTitleMaxItems: 1
   };
 
-  constructor(private productService: ProductService, private categoryService: CategoryService) { }
+  constructor(private productService: ProductService, private categoryService: CategoryService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.getProducts()
     this.getCategories()
-    console.log({id: 1, name: "test"} == {id: 1, name: "test"});
+
+
+    const id = Number(this.route.snapshot.queryParamMap.get('id'));
+    console.log(id)
   }
 
   getProducts(): void {
