@@ -16,53 +16,56 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class ProductListComponent implements OnInit {
 
-  products : Product[] = []
-  categories : Category[] = []
-  displayedProducts : Product[] = []
+  products: Product[] = []
+  categories: Category[] = []
+  displayedProducts: Product[] = []
 
   //  Page managing
-  activePageNumber : number = 1
-  maxProductPerPage : number = 6
-  topProductIndex : number = 1
+  activePageNumber: number = 1
+  maxProductPerPage: number = 6
+  topProductIndex: number = 1
 
-  maxNavPagesNumber : number = 7
-  totalNavPagesNumber : number = 1
-  firstNavPage : number = 1
-  visibleNavPages : number = 1
+  maxNavPagesNumber: number = 7
+  totalNavPagesNumber: number = 1
+  firstNavPage: number = 1
+  visibleNavPages: number = 1
 
   //  Sorting
-  currentSorter : ProductSorter = {
+  currentSorter: ProductSorter = {
     name: "Sort",
     function: (p1, p2) => p1.id - p2.id
   }
-  sorters : ProductSorter[] = [
+  sorters: ProductSorter[] = [
     {
       name: "Name ↑",
-      function: (p1 : Product, p2 : Product) => p2.name.localeCompare(p1.name)
-    },{
+      function: (p1: Product, p2: Product) => p2.name.localeCompare(p1.name)
+    }, {
       name: "Name ↓",
-      function: (p1 : Product, p2 : Product) => p1.name.localeCompare(p2.name)
-    },{
+      function: (p1: Product, p2: Product) => p1.name.localeCompare(p2.name)
+    }, {
       name: "Price ↑",
-      function: (p1 : Product, p2 : Product) => p2.price - p1.price
-    },{
+      function: (p1: Product, p2: Product) => p2.price - p1.price
+    }, {
       name: "Price ↓",
-      function: (p1 : Product, p2 : Product) => p1.price - p2.price
+      function: (p1: Product, p2: Product) => p1.price - p2.price
     }
   ]
 
   //  Filtering
-  nameFilterValue : string = "";
-  nameFilter = (p : Product) => this.nameFilterValue.length > 0 ? p.name.toUpperCase().includes(this.nameFilterValue.toUpperCase()) : true
-  descriptionFilterValue : string = "";
-  descriptionFilter = (p : Product) => this.descriptionFilterValue.length > 0 ? p.description.toUpperCase().includes(this.descriptionFilterValue.toUpperCase()) : true
-  minPriceFilterValue : number = -Infinity;
-  maxPriceFilterValue : number = Infinity;
+  nameFilterValue: string = "";
+  nameFilter = (p: Product) => this.nameFilterValue.length > 0 ? p.name.toUpperCase().includes(this.nameFilterValue.toUpperCase()) : true
+  descriptionFilterValue: string = "";
+  descriptionFilter = (p: Product) => this.descriptionFilterValue.length > 0 ? p.description.toUpperCase().includes(this.descriptionFilterValue.toUpperCase()) : true
+  minPriceFilterValue: number = 0;
+  minProductPrice: number = 0;
+  maxPriceFilterValue: number = Infinity;
+  maxProductPrice: number = Infinity;
   priceFilter = (p: Product) => p.price >= this.minPriceFilterValue && p.price <= this.maxPriceFilterValue
 
-    //  Categories Filtering
-  categoriesFilterValue : Category[] = [];
-  categoriesFilter(p : Product) : boolean {
+  //  Categories Filtering
+  categoriesFilterValue: Category[] = [];
+
+  categoriesFilter(p: Product): boolean {
     for (let category of this.categoriesFilterValue) {
       if (!p.categories.find(c => c.id == category.id)) {
         return false;
@@ -70,13 +73,15 @@ export class ProductListComponent implements OnInit {
     }
     return true;
   }
+
   optionsModel: number[] = [];
   // Settings configuration
   mySettings: IMultiSelectSettings = {
     dynamicTitleMaxItems: 1
   };
 
-  constructor(private productService: ProductService, private categoryService: CategoryService, private route: ActivatedRoute) { }
+  constructor(private productService: ProductService, private categoryService: CategoryService, private route: ActivatedRoute) {
+  }
 
   ngOnInit() {
     this.getProducts()
@@ -92,21 +97,27 @@ export class ProductListComponent implements OnInit {
       .subscribe(products => {
         this.products = products
         this.displayedProducts = this.products
+        //  Setting min and product
+        this.minProductPrice = Math.min(...this.products.map(p => p.price))
+        this.maxProductPrice = Math.max(...this.products.map(p => p.price))
+        this.minPriceFilterValue = this.minProductPrice
+        this.maxPriceFilterValue = this.maxProductPrice
+        //
         this.calculatePagesNumber()
         this.displayProductsPage(1)
-    })
+      })
   }
 
-  getCategories() : void {
+  getCategories(): void {
     this.categoryService.getCategories()
       .subscribe(categories => {
         this.categories = categories
       })
   }
 
-  displayProductsPage(pageNumber : number) {
+  displayProductsPage(pageNumber: number) {
     this.activePageNumber = pageNumber
-    this.topProductIndex = 1 + ((this.activePageNumber-1) * this.maxProductPerPage)
+    this.topProductIndex = 1 + ((this.activePageNumber - 1) * this.maxProductPerPage)
 
     let offset = Math.floor(this.maxNavPagesNumber / 2)
     if (this.activePageNumber - offset <= 1) {
@@ -126,7 +137,7 @@ export class ProductListComponent implements OnInit {
     // console.log(this.totalNavPagesNumber)
   }
 
-  sortWith(sorter : ProductSorter) {
+  sortWith(sorter: ProductSorter) {
     this.currentSorter = sorter
     this.displayedProducts.sort(sorter.function)
   }
@@ -138,28 +149,28 @@ export class ProductListComponent implements OnInit {
     this.calculatePagesNumber()
   }
 
-  filterName(filterValue : string) {
+  filterName(filterValue: string) {
     this.nameFilterValue = filterValue
     this.filterProducts()
   }
 
-  filterDescription(filterValue : string) {
+  filterDescription(filterValue: string) {
     this.descriptionFilterValue = filterValue
     this.filterProducts()
   }
 
-  filterCategories(filterValue : number[]) {
+  filterCategories(filterValue: number[]) {
     this.categoriesFilterValue = this.categories.filter(c => filterValue.includes(c.id))
     this.filterProducts()
   }
 
-  filterMinPrice(filterValue : number) {
-    this.minPriceFilterValue = filterValue
+  filterMinPrice(filterValue: number) {
+    this.minPriceFilterValue = filterValue != null ? filterValue : this.minProductPrice
     this.filterProducts()
   }
 
-  filterMaxPrice(filterValue : number) {
-    this.maxPriceFilterValue = filterValue
+  filterMaxPrice(filterValue: number) {
+    this.maxPriceFilterValue = filterValue != null ? filterValue : this.maxProductPrice
     this.filterProducts()
   }
 }
