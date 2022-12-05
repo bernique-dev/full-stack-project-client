@@ -1,0 +1,20 @@
+:host {
+  width: 75% !important;
+}
+
+h2 {
+  color: var(--main-color);
+}
+
+h2, h3 {
+  text-align: center;
+}
+
+p {
+  justify-content: center;
+}
+
+.shop-name, .category-link {
+  color: var(--light-color);
+  text-decoration: none;
+}

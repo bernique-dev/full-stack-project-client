@@ -1,0 +1,19 @@
+<div class="container mt-5" *ngIf="product">
+
+  <div class="d-flex flex-row justify-content-center align-items-center gap-2">
+    <h2>{{ product.name }}</h2>
+    <a class="btn btn-primary" href="product/modify/{{ product.id }}">Modify</a>
+  </div>
+  <h3><a class="shop-name" href="shop/{{ product.shopId }}">{{ product.shopName }}</a></h3>
+  <h4>${{ product.price }}</h4>
+
+  <div class="mt-1 mb-1 spec-1">
+    <ng-container *ngFor="let category of product.categories; let categoryIndex = index">
+      <a class="category-link" href="category/{{ category.id }}">{{ category.name }}</a>
+      <span *ngIf="categoryIndex < product!.categories.length - 1 " class="dot"></span>
+    </ng-container>
+  </div>
+
+  <p>{{ product.description }}</p>
+
+</div>

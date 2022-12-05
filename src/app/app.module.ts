@@ -9,6 +9,7 @@ import {ProductListComponent} from './product-list/product-list.component';
 import {NgxBootstrapMultiselectModule} from "ngx-bootstrap-multiselect";
 import {RouterOutlet} from "@angular/router";
 import { AppRoutingModule } from './app-routing.module';
+import { ProductDetailsComponent } from './product-details/product-details.component';
 
 @NgModule({
     imports: [
@@ -22,7 +23,8 @@ import { AppRoutingModule } from './app-routing.module';
     ],
   declarations: [
     AppComponent,
-    ProductListComponent
+    ProductListComponent,
+    ProductDetailsComponent
   ],
   providers: [
 

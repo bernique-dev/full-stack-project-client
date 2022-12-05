@@ -11,16 +11,6 @@ body {
   width: 100%
 }
 
-.dot {
-  height: 7px;
-  width: 7px;
-  margin-left: 6px;
-  margin-right: 6px;
-  margin-top: 3px;
-  background-color: var(--bs-gray-dark);
-  border-radius: 50%;
-  display: inline-block
-}
 
 .spec-1 {
   color: #938787;
@@ -75,6 +65,3 @@ h5 {
 :host .input-group {
   margin: 10px 0;
 }
-
-
-
