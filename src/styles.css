@@ -19,3 +19,16 @@
 input {
   accent-color: var(--dark-color);
 }
+
+
+
+.dot {
+  height: 7px;
+  width: 7px;
+  margin-left: 6px;
+  margin-right: 6px;
+  margin-top: 3px;
+  background-color: var(--bs-gray-dark);
+  border-radius: 50%;
+  display: inline-block
+}
