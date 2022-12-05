@@ -6,7 +6,6 @@ import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
 import {CategoryService} from "../category.service";
 import {Category} from "../shared/category";
 import {IMultiSelectSettings} from "ngx-bootstrap-multiselect";
-import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-product-list',
@@ -80,16 +79,12 @@ export class ProductListComponent implements OnInit {
     dynamicTitleMaxItems: 1
   };
 
-  constructor(private productService: ProductService, private categoryService: CategoryService, private route: ActivatedRoute) {
+  constructor(private productService: ProductService, private categoryService: CategoryService) {
   }
 
   ngOnInit() {
     this.getProducts()
     this.getCategories()
-
-
-    const id = Number(this.route.snapshot.queryParamMap.get('id'));
-    console.log(id)
   }
 
   getProducts(): void {
