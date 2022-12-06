@@ -6,7 +6,8 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:8080',
   productsUrl: 'http://localhost:8080/products',
-  categoriesUrl: 'http://localhost:8080/categories'
+  categoriesUrl: 'http://localhost:8080/categories',
+  shopsUrl: 'http://localhost:8080/shops'
 };
 
 /*
