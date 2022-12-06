@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ProductService} from "../product.service";
 import {Product} from "../shared/product";
 
@@ -13,17 +13,28 @@ export class ProductDetailsComponent implements OnInit {
 
   product?: Product;
 
-  constructor(private route: ActivatedRoute, private productService: ProductService) { }
+  constructor(private route: ActivatedRoute, private productService: ProductService, private router: Router) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(
       params => this.productService.getProduct(params['id']).subscribe(
         product => {
           this.product = product
-          console.log(this.product)
+        },
+        _ => {
+          this.router.navigateByUrl("products")
         }
       )
     )
+  }
+
+  deleteProduct() {
+    this.productService.deleteProduct(this.product!).subscribe(
+      _ => {
+        this.router.navigateByUrl("products")
+      }
+    )
+
   }
 
 }

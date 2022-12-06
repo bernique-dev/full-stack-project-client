@@ -2,9 +2,6 @@
   width: 75% !important;
 }
 
-h2 {
-  color: var(--main-color);
-}
 
 h2, h3 {
   text-align: center;
@@ -15,6 +12,11 @@ p {
 }
 
 .shop-name, .category-link {
-  color: var(--light-color);
+  color: black;
   text-decoration: none;
+}
+
+.multi-select {
+  width: 100% !important;
+  margin: 0 !important;
 }

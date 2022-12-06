@@ -76,7 +76,8 @@ export class ProductListComponent implements OnInit {
   optionsModel: number[] = [];
   // Settings configuration
   mySettings: IMultiSelectSettings = {
-    dynamicTitleMaxItems: 1
+    dynamicTitleMaxItems: 1,
+    selectAddedValues: true
   };
 
   constructor(private productService: ProductService, private categoryService: CategoryService) {
@@ -160,7 +161,7 @@ export class ProductListComponent implements OnInit {
   }
 
   filterMinPrice(filterValue: number) {
-    this.minPriceFilterValue = filterValue != null ? filterValue : this.minProductPrice
+    this.minPriceFilterValue = filterValue != null ? Math.max(0, filterValue) : this.minProductPrice
     this.filterProducts()
   }
 

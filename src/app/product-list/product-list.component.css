@@ -48,11 +48,6 @@ h5 {
 :host .mb-5 {
   margin-bottom: 1em !important;
 }
-
-.product-list-container {
-  width: 65vw;
-}
-
 .form-control:focus {
   border-color: var(--bs-primary) !important;
   box-shadow: inset 0 1px 1px var(--bs-primary), 0 0 8px var(--bs-primary) !important;

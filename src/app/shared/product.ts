@@ -1,18 +1,14 @@
 import {Category} from "./category";
 
-export class Product {
-  id: number = 0
-  name: string = ""
-  description: string = ""
-  price: number = 0
+export interface Product {
+  id: number
+  name: string
+  description: string
+  price: number
 
-  shopId: number = 0
-  shopName: string = ""
+  shop: Object
+  shopId: number
+  shopName: string
 
-  categories : Category[] = []
-
-  isEqual(product : Product) : boolean {
-    return this.id == product.id
-  }
-
+  categories : Category[]
 }

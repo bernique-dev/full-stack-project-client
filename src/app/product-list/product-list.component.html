@@ -1,6 +1,6 @@
-<div>
-  <div class="input-group">
-    <div class="form-outline d-flex align-items-center justify-content-center">
+<div class="container row m-2">
+  <div class="d-inline-flex justify-content-between">
+    <div class="form-outline d-inline-flex">
       <input type="search" id="form1" class="form-control" placeholder="Filter name" [ngModel]="nameFilterValue"
              (ngModelChange)="filterName($event)"/>
       <input type="search" id="form2" class="form-control mx-1" placeholder="Filter description"
@@ -25,44 +25,41 @@
         </div>
       </div>
 
-
     </div>
-
+    <a class="btn btn-outline-primary" href="product/create">Create</a>
   </div>
 
 </div>
 
 <div class="container mb-5 product-list-container">
   <div class="d-flex justify-content-center row">
-    <div class="col-md-10">
-      <ng-container *ngFor="let product of displayedProducts; let productIndex = index">
-        <div
-          [ngClass]="{'visually-hidden' : !(productIndex >= topProductIndex - 1 && productIndex < topProductIndex + maxProductPerPage - 1)}"
-          class="row p-2 bg-white border rounded">
-          <div class="col-md-9 mt-0">
-            <h5 class="text-truncate">{{product.name}}</h5>
-            <div class="mt-1 mb-1 spec-1">
-              <ng-container *ngFor="let category of product.categories; let categoryIndex = index">
-                <span>{{ category.name }}</span>
-                <span *ngIf="categoryIndex < product.categories.length - 1 " class="dot"></span>
-              </ng-container>
-            </div>
-            <p class="text-justify text-truncate para mb-0">{{product.description}}</p>
+    <ng-container *ngFor="let product of displayedProducts; let productIndex = index">
+      <div
+        [ngClass]="{'visually-hidden' : !(productIndex >= topProductIndex - 1 && productIndex < topProductIndex + maxProductPerPage - 1)}"
+        class="row p-2 bg-white border rounded">
+        <div class="col-md-9 mt-0">
+          <h5 class="text-truncate">{{product.name}}</h5>
+          <div class="mt-1 mb-1 spec-1">
+            <ng-container *ngFor="let category of product.categories; let categoryIndex = index">
+              <span>{{ category.name }}</span>
+              <span *ngIf="categoryIndex < product.categories.length - 1 " class="dot"></span>
+            </ng-container>
           </div>
-          <div class="align-items-center align-content-center justify-item-center col-md-3 border-left mt-1">
-            <div class="d-flex flex-row justify-content-center align-items-center">
-              <h4>${{product.price}}</h4>
-            </div>
-            <div class="d-flex flex-row justify-content-center align-items-center text-truncate">
-              <h5>{{ product.shopName }}</h5>
-            </div>
-            <div class="d-flex flex-column">
-              <a class="btn btn-primary btn-sm btn-primary" href="product/{{ product.id }}">Details</a>
-            </div>
+          <p class="text-justify text-truncate para mb-0">{{product.description}}</p>
+        </div>
+        <div class="align-items-center align-content-center justify-item-center col-md-3 border-left mt-1">
+          <div class="d-flex flex-row justify-content-center align-items-center">
+            <h4>${{product.price}}</h4>
+          </div>
+          <div class="d-flex flex-row justify-content-center align-items-center text-truncate">
+            <h5>{{ product.shopName }}</h5>
+          </div>
+          <div class="d-flex flex-column">
+            <a class="btn btn-primary btn-sm btn-primary" href="product/details/{{ product.id }}">Details</a>
           </div>
         </div>
-      </ng-container>
-    </div>
+      </div>
+    </ng-container>
   </div>
 </div>
 

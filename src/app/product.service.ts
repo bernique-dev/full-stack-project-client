@@ -17,4 +17,25 @@ export class ProductService {
     return this.http.get<Product>(environment.productsUrl + '/' + id)
   }
 
+  addProduct(product : Product) : Observable<Product> {
+    let productObject = {...product}
+    // @ts-ignore
+    delete productObject['id']
+    const {productsUrl} = environment;
+    return this.http.post<Product>(productsUrl, productObject, environment.httpOptions);
+  }
+
+  modifyProduct(product : Product) {
+    let productObject = {...product}
+    // @ts-ignore
+    delete productObject['id']
+    const {productsUrl, httpOptions} = environment;
+    return this.http.patch<Product>(productsUrl + '/' + product.id, productObject, httpOptions)
+  }
+
+  deleteProduct(product : Product) {
+    const {productsUrl, httpOptions} = environment;
+    return this.http.delete<Product>(productsUrl + '/' + product.id, httpOptions)
+  }
+
 }

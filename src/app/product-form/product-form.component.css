@@ -1,0 +1,23 @@
+.dropdown-item {
+  background-color: white;
+  color: black;
+
+}
+
+.dropdown-item:focus, .dropdown-item:hover {
+  color: #1e2125;
+  background-color: #e9ecef;
+}
+
+select > option:hover {
+  color: #1B517E;
+  cursor: pointer;
+}
+
+textarea {
+  resize: none;
+}
+
+.form-outline {
+  margin-bottom: 10%;
+}
