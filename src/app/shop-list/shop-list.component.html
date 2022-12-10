@@ -1,0 +1,102 @@
+<div>
+  <div class="input-group">
+    <div class="form-outline d-flex align-items-center justify-content-center">
+      <input type="search" id="form1" class="form-control" placeholder="Filter name" [ngModel]="nameFilterValue"
+             (ngModelChange)="filterName($event)"/>
+      <input type="number" class="form-control w-25 mx-1" aria-label="Min" placeholder="Min" min="0"
+             [ngModel]="minNbrProductFilterValue" (ngModelChange)="filterMinNbrProductFilterValue($event)"/>
+      <input type="number" class="form-control w-25" aria-label="Max" placeholder="Max" min="0"
+             [ngModel]="maxNbrProductFilterValue" (ngModelChange)="filterMaxNbrProductFilterValue($event)"/>
+
+      <mat-form-field>
+        <input matInput [matDatepicker]="pickerMin" autocomplete="off" placeholder="placeholder only"
+               [ngModel]="minCreationDateValueFilterValue" (ngModelChange)="filterMinDateFilterValue($event)"/>
+        <mat-datepicker-toggle matSuffix [for]="pickerMin"></mat-datepicker-toggle>
+        <mat-datepicker #pickerMin color="primary"></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput [matDatepicker]="pickerMax" autocomplete="off" placeholder="placeholder only"
+               [ngModel]="maxCreationDateValueFilterValue" (ngModelChange)="filterMaxDateFilterValue($event)"/>
+        <mat-datepicker-toggle matSuffix [for]="pickerMax"></mat-datepicker-toggle>
+        <mat-datepicker #pickerMax color="primary"></mat-datepicker>
+      </mat-form-field>
+
+      <div ngbDropdown class="d-inline-flex">
+        <button type="button" class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>
+          {{ currentSorter.name }}
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem *ngFor="let sorter of sorters" (click)="sortWith(sorter)">{{sorter.name}}</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="container mb-5 shop-list-container">
+  <div class="d-flex justify-content-center row">
+    <div class="col-md-10">
+      <ng-container *ngFor="let shop of displayedShops; let shopIndex = index">
+        <div [ngClass]="{'visually-hidden' : !(shopIndex >= topShopIndex - 1 && shopIndex < topShopIndex + maxShopPerPage - 1)}"
+          class="row p-2 bg-white border rounded">
+          <div class="d-inline-flex flex-row mt-0">
+                <div class="border-left col-md-9">
+                  <h5 class="text-truncate">{{ shop.name }}</h5>
+                  <p>Nombre de produits disponible: {{shop.productList.length}}</p>
+                </div>
+
+                <div class="align-items-center col-md-3 align-content-center justify-item-center border-right mt-1">
+                  <div class="d-flex flex-row justify-content-center align-items-center">
+                    <p>{{shop.creationDate.getDay()}}/{{shop.creationDate.getMonth()}}/{{shop.creationDate.getFullYear()}}</p>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <a class="btn btn-primary btn-sm btn-primary" href="shop/{{ shop.id }}">Details</a>
+                  </div>
+                </div>
+          </div>
+          <div class="d-inline-flex flex-row gap-4">
+            <ng-container  *ngFor="let horary of shop.openingTimesList; let i = index">
+                <div>
+                  <h6>{{ getDayFromNumber(i) }}</h6>
+                  <p>{{ horary.openingTime }} - {{ horary.closingTime }}</p>
+                </div>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link border" [ngClass]="{'disabled': activePageNumber == 1}"
+         (click)="displayShopsPage(1)">First</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link border" [ngClass]="{'disabled': activePageNumber == 1}"
+         (click)="displayShopsPage(activePageNumber-1)">Previous</a>
+    </li>
+    <ng-container *ngFor="let item of [].constructor(visibleNavPages); let i = index">
+      <li class="page-item" [ngClass]="{'active' : activePageNumber == i + firstNavPage}">
+        <a class="page-link border" (click)="displayShopsPage(i + firstNavPage)">
+          {{ ((i + firstNavPage) / 10 >= 1 ? '' : '0') + (i + firstNavPage).toString()}}
+        </a>
+      </li>
+    </ng-container>
+    <li class="page-item">
+      <a class="page-link border" [ngClass]="{'disabled': activePageNumber >= totalNavPagesNumber}"
+         (click)="displayShopsPage(activePageNumber+1)">Next</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link border" [ngClass]="{'disabled': activePageNumber >= totalNavPagesNumber}"
+         (click)="displayShopsPage(totalNavPagesNumber)">Last</a>
+    </li>
+  </ul>
+</nav>
+

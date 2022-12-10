@@ -1,0 +1,22 @@
+body {
+  background: #eee
+}
+
+h5 {
+  font-weight: 400
+}
+
+:host {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+:host .mb-5 {
+  margin-bottom: 1em !important;
+}
+
+.shop-list-container {
+  width: 65vw;
+}

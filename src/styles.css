@@ -1,3 +1,6 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+
 .btn-primary, .dropdown-menu {
   --light-color: rgba(168, 218, 220, 255);
   --main-color: rgba(69, 123, 157, 255);
