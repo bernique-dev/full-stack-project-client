@@ -1,4 +1,5 @@
 import {Category} from "./category";
+import {Translation} from "./translation";
 
 export interface Product {
   id: number
@@ -9,6 +10,8 @@ export interface Product {
   shop: Object
   shopId: number
   shopName: string
+
+  translations: {[key: string]: Translation}
 
   categories : Category[]
 }

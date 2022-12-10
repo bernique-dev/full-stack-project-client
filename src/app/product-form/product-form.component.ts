@@ -9,11 +9,13 @@ import {CategoryService} from "../category.service";
 import {Shop} from "../shared/shop";
 import {IMultiSelectSettings} from "ngx-bootstrap-multiselect";
 import {FormControl, FormGroup} from "@angular/forms";
+import {LanguageService} from "../language.service";
+import {Translation} from "../shared/translation";
 
 @Component({
   selector: 'app-product-form',
   templateUrl: './product-form.component.html',
-  providers: [ProductService, ShopService, CategoryService],
+  providers: [ProductService, ShopService, CategoryService, LanguageService],
   styleUrls: ['./product-form.component.css'],
   exportAs: 'ngModel'
 })
@@ -24,12 +26,16 @@ export class ProductFormComponent implements OnInit {
     productDescription: new FormControl(),
     productPrice: new FormControl(),
     productCategories: new FormControl(),
-    productShop: new FormControl()
+    productShop: new FormControl(),
+    productTranslationLanguage: new FormControl(),
+    productTranslationName: new FormControl(),
+    productTranslationDescription: new FormControl()
   });
   productId: number = 0
 
   isModifying?: boolean = undefined
   shops: Shop[] = []
+  languages: string[] = []
 
   categories: Category[] = []
   categoryIndexes: number[] = [];
@@ -38,9 +44,13 @@ export class ProductFormComponent implements OnInit {
     dynamicTitleMaxItems: 1
   };
 
+  translations: { [key: string]: Translation } = {}
+
   constructor(private route: ActivatedRoute, private router: Router,
               private productService: ProductService,
-              private shopService: ShopService, private categoryService: CategoryService) {
+              private shopService: ShopService,
+              private categoryService: CategoryService,
+              private languageService: LanguageService) {
   }
 
   ngOnInit(): void {
@@ -50,7 +60,7 @@ export class ProductFormComponent implements OnInit {
       params => {
 
         let queryObservables: Observable<any>[] = [
-          this.shopService.getShops(), this.categoryService.getCategories()
+          this.shopService.getShops(), this.categoryService.getCategories(), this.languageService.getLanguages()
         ]
         if (params['id']) {
           this.productId = params['id']
@@ -60,7 +70,9 @@ export class ProductFormComponent implements OnInit {
               this.isModifying = true
               this.shops = results[0]
               this.categories = results[1]
-              let product: Product = results[2]
+              this.languages = results[2]
+
+              let product: Product = results[3]
               product!.shop = {
                 id: product!.shopId
               }
@@ -72,6 +84,13 @@ export class ProductFormComponent implements OnInit {
               this.productForm.controls['productCategories'].setValue(product!.categories.map(c1 => this.categories.findIndex(c2 => c1.id == c2.id) + 1))
               this.productForm.controls['productShop'].setValue(this.shops.find(s => s.id == product!.shopId))
 
+              this.languages.forEach(l => this.translations[l] = new Translation('', ''))
+              for (let prop in product.translations) {
+                let translation = product.translations[prop]
+                this.translations[prop] = new Translation(translation.translatedName, translation.translatedDescription)
+              }
+              let englishIndex = this.languages.indexOf("EN")
+              this.setCurrentTranslationLanguage(this.languages[englishIndex < 0 ? 0 : englishIndex])
             }
           )
         } else {
@@ -80,12 +99,17 @@ export class ProductFormComponent implements OnInit {
               this.isModifying = false
               this.shops = results[0]
               this.categories = results[1]
+              this.languages = results[2]
 
               this.productForm.controls['productName'].setValue("New Product")
               this.productForm.controls['productDescription'].setValue("")
               this.productForm.controls['productPrice'].setValue(0)
               this.productForm.controls['productCategories'].setValue([])
-              this.productForm.controls['productShop'].setValue(this.shops[0])
+              this.productForm.controls['productShop'].setValue({id: this.shops[0].id})
+
+              this.languages.forEach(l => this.translations[l] = new Translation('', ''))
+              let englishIndex = this.languages.indexOf("EN")
+              this.setCurrentTranslationLanguage(this.languages[englishIndex < 0 ? 0 : englishIndex])
             }
           )
         }
@@ -108,20 +132,38 @@ export class ProductFormComponent implements OnInit {
   }
 
   private generateProduct(id: number): Product {
+    let productTranslations: { [key: string]: Translation } = {}
+    for (let prop in this.translations) {
+      if ((this.translations[prop] as Translation).isSendable()) {
+        productTranslations[prop] = this.translations[prop]
+      }
+    }
     return {
       id: id,
       name: this.productForm.controls['productName'].value,
       description: this.productForm.controls['productDescription'].value,
       price: this.productForm.controls['productPrice'].value,
       categories: this.productForm.controls['productCategories'].value.map((idx: number) => this.categories[idx - 1]),
-      shop: this.productForm.controls['productShop'].value,
+      shop: {id: this.productForm.controls['productShop'].value.id},
       shopId: this.productForm.controls['productShop'].value.id,
-      shopName: this.productForm.controls['productShop'].value.name
+      shopName: this.productForm.controls['productShop'].value.name,
+      translations: productTranslations
     }
   }
 
   sortFormCategories() {
     this.productForm.value.productCategories = (this.productForm.value.productCategories as number[]).sort((a, b) => a - b)
+  }
+
+  setCurrentTranslationLanguage(language: string) {
+    this.productForm.controls['productTranslationLanguage'].setValue(language)
+    this.productForm.controls['productTranslationName'].setValue(this.translations[language].translatedName)
+    this.productForm.controls['productTranslationDescription'].setValue(this.translations[language].translatedDescription)
+  }
+
+  changeCurrentTranslation() {
+    this.translations[this.productForm.get('productTranslationLanguage')!.value].translatedName = this.productForm.get('productTranslationName')!.value
+    this.translations[this.productForm.get('productTranslationLanguage')!.value].translatedDescription = this.productForm.get('productTranslationDescription')!.value
   }
 
 }

@@ -10,6 +10,7 @@ export const environment = {
   productsUrl: 'http://localhost:8080/products',
   categoriesUrl: 'http://localhost:8080/categories',
   shopsUrl: 'http://localhost:8080/shops',
+  languagesUrl: 'http://localhost:8080/languages',
   httpOptions: {
     headers: new HttpHeaders({
       'Content-Type':  'application/json'

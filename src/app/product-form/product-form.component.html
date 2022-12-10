@@ -17,14 +17,16 @@
       </ngx-bootstrap-multiselect>
 
       <div ngbDropdown>
-        <button type="button" class="btn btn-primary text-truncate" id="dropdownBasic1" ngbDropdownToggle [value]="productForm.controls['productShop']!.value">
+        <button type="button" class="btn btn-primary text-truncate" id="dropdownBasic1" ngbDropdownToggle
+                [value]="productForm.controls['productShop']!.value">
           {{productForm.value.productShop.name}}
         </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic1" >
-          <button ngbDropdownItem  *ngFor="let shop of shops"
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem *ngFor="let shop of shops"
                   (click)="productForm.controls['productShop'].setValue(shop)">{{shop.name}}</button>
         </div>
       </div>
+
 
     </div>
 
@@ -34,39 +36,48 @@
               [ngClass]="{ 'is-valid' : productForm.get('productDescription')!.valid, 'is-invalid' : productForm.get('productDescription')!.invalid }"
               rows="10" formControlName="productDescription"></textarea>
 
-    <input class="form-control mb-2" type="number" name="productPrice" placeholder="Price"
+    <input class="form-control mb-5" type="number" name="productPrice" placeholder="Price"
            [ngClass]="{ 'is-valid' : productForm.get('productPrice')!.valid, 'is-invalid' : productForm.get('productPrice')!.invalid }"
            min="0"
            formControlName="productPrice"/>
+
+    <div class="d-inline-flex w-100 gap-2 align-content-stretch mb-2">
+      <input class="form-control mb-2"
+             type="text"
+             [ngClass]="{'is-valid' : productForm.get('productTranslationName')!.value.length > 0 && productForm.get('productTranslationName')!.valid,
+                        'is-invalid' : productForm.get('productTranslationName')!.invalid }"
+             (input)="changeCurrentTranslation()"
+             minlength="5" formControlName="productTranslationName" placeholder="Name" value="test"
+      />
+      <div>
+        <div *ngIf="productForm.get('productTranslationLanguage')!.invalid">
+          Name must be at least 5 characters long.
+        </div>
+      </div>
+      <div ngbDropdown>
+        <button type="button" class="btn btn-primary text-truncate" id="dropdownBasic2"
+                [disabled]="productForm.get('productTranslationName')!.invalid || productForm.get('productTranslationDescription')!.invalid"
+                [value]="productForm.controls['productTranslationLanguage']!.value" ngbDropdownToggle>
+          {{productForm.controls['productTranslationLanguage']!.value}}
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem *ngFor="let language of languages"
+                  (click)="setCurrentTranslationLanguage(language)">{{language}}</button>
+        </div>
+      </div>
+    </div>
+
+    <textarea class="form-control mb-4" type="textarea" name="productDescription"
+              placeholder="Description"
+              [ngClass]="{ 'is-valid': productForm.get('productTranslationDescription')!.value.length > 0 && productForm.get('productDescription')!.valid,
+                           'is-invalid': productForm.get('productDescription')!.invalid }"
+              rows="10" formControlName="productTranslationDescription"
+              (input)="changeCurrentTranslation()"></textarea>
+
 
     <input class="btn btn-primary form-control" type="submit" value="{{ isModifying ? 'Modify' : 'Create' }}"
            [disabled]="productForm.invalid"
            (click)="isModifying ? modifyProduct(productId) : createProduct()">
   </form>
-
-  <h3>Preview</h3>
-  <div class="row p-2 bg-white border rounded vw-75" *ngIf="shops && categories && true">
-    <div class="col-md-9 mt-0">
-      <h5 class="text-truncate">{{productForm.value.productName}}</h5>
-      <div class="mt-1 mb-1 spec-1">
-        <ng-container *ngFor="let category of productForm.value.productCategories; let categoryIndex = index">
-          <span>{{ categories[category-1].name }}</span>
-          <span *ngIf="categoryIndex < productForm.value.productCategories.length - 1 " class="dot"></span>
-        </ng-container>
-      </div>
-      <p class="text-justify text-truncate para mb-0">{{productForm.value.productDescription}}</p>
-    </div>
-    <div class="align-items-center align-content-center justify-item-center col-md-3 border-left mt-1">
-      <div class="d-flex flex-row justify-content-center align-items-center">
-        <h4>${{productForm.value.productPrice}}</h4>
-      </div>
-      <div class="d-flex flex-row justify-content-center align-items-center text-truncate">
-        <h5>{{ productForm.value.productShop.name }}</h5>
-      </div>
-      <div class="d-flex flex-column">
-        <span class="btn btn-primary btn-sm btn-primary">Details</span>
-      </div>
-    </div>
-  </div>
 
 </div>
