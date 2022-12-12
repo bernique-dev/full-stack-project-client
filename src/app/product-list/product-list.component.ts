@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core'
+import {Component, Input, OnInit} from '@angular/core'
 import {ProductService} from "../product.service"
 import {Product} from "../shared/product"
 import {ProductSorter} from "../shared/productsorter";
@@ -18,6 +18,9 @@ export class ProductListComponent implements OnInit {
   products: Product[] = []
   categories: Category[] = []
   displayedProducts: Product[] = []
+
+  @Input() categoryId : number = -1
+  @Input() shopId : number = -1
 
   //  Page managing
   activePageNumber: number = 1
@@ -89,19 +92,32 @@ export class ProductListComponent implements OnInit {
   }
 
   getProducts(): void {
-    this.productService.getProducts()
-      .subscribe(products => {
-        this.products = products
-        this.displayedProducts = this.products
-        //  Setting min and product
-        this.minProductPrice = Math.min(...this.products.map(p => p.price))
-        this.maxProductPrice = Math.max(...this.products.map(p => p.price))
-        this.minPriceFilterValue = this.minProductPrice
-        this.maxPriceFilterValue = this.maxProductPrice
-        //
-        this.calculatePagesNumber()
-        this.displayProductsPage(1)
-      })
+
+    let observable;
+
+    if (this.categoryId >= 0 && this.shopId >= 0) {
+      observable = this.productService.getProductsFromShopAndCategory(this.shopId, this.categoryId)
+    } else if (this.categoryId >= 0) {
+      observable = this.productService.getProductsFromCategory(this.categoryId)
+    } else if (this.shopId >= 0) {
+      observable = this.productService.getProductsFromShop(this.shopId)
+    } else {
+      observable = this.productService.getProducts()
+    }
+
+    observable.subscribe(products => {
+      console.log(this.categoryId + ' - ' + this.shopId + " | " + products.length)
+      this.products = products
+      this.displayedProducts = this.products
+      //  Setting min and product
+      this.minProductPrice = Math.min(...this.products.map(p => p.price))
+      this.maxProductPrice = Math.max(...this.products.map(p => p.price))
+      this.minPriceFilterValue = this.minProductPrice
+      this.maxPriceFilterValue = this.maxProductPrice
+      //
+      this.calculatePagesNumber()
+      this.displayProductsPage(1)
+    })
   }
 
   getCategories(): void {

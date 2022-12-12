@@ -18,12 +18,7 @@
     </div>
   </div>
 
-  <h4>Available product</h4>
-  <ng-container *ngFor="let product of shop.productList">
-    <div>
-      <p class="d-inline-flex flex-row gap-4">{{product.name}}</p>
-      <a class="btn btn-primary" href="product/{{ product.id }}">Details</a>
-    </div>
-  </ng-container>
+  <h4>Available product(s)</h4>
+  <app-product-list [shopId]="shop.id"></app-product-list>
 
 </div>
