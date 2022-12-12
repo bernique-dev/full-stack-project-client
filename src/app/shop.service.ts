@@ -13,4 +13,9 @@ export class ShopService {
     return this.http.get<Shop[]>(environment.shopsUrl);
   }
 
+
+  getShop(id: number) : Observable<Shop> {
+    return this.http.get<Shop>(environment.shopsUrl + '/' + id)
+  }
+
 }
