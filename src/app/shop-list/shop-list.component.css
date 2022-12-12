@@ -16,11 +16,3 @@ h5 {
 :host .mb-5 {
   margin-bottom: 1em !important;
 }
-
-.shop-list-container {
-  width: 65vw;
-}
-
-#add-button {
-  border-radius: var(--bs-btn-border-radius);
-}

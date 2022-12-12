@@ -8,14 +8,14 @@
       <input type="number" class="form-control w-25" aria-label="Max" placeholder="Max" min="0"
              [ngModel]="maxNbrProductFilterValue" (ngModelChange)="filterMaxNbrProductFilterValue($event)"/>
 
-      <mat-form-field class="form-control py-0 my-0">
+      <mat-form-field appearance="outline">
         <input matInput [matDatepicker]="pickerMin" autocomplete="off"
                [ngModel]="minCreationDateValueFilterValue" (ngModelChange)="filterMinDateFilterValue($event)"/>
         <mat-datepicker-toggle matSuffix [for]="pickerMin"></mat-datepicker-toggle>
         <mat-datepicker #pickerMin color="primary"></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field class="form-control py-0 my-0">
+      <mat-form-field appearance="outline">
         <input matInput [matDatepicker]="pickerMax" autocomplete="off"
                [ngModel]="maxCreationDateValueFilterValue" (ngModelChange)="filterMaxDateFilterValue($event)"/>
         <mat-datepicker-toggle matSuffix [for]="pickerMax"></mat-datepicker-toggle>

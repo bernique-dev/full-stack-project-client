@@ -4,4 +4,11 @@ $theme-colors: (
   primary: rgba(69, 123, 157, 255)
 );
 
+
+
+.mat-form-field-wrapper {
+  padding-bottom: 0 !important;
+}
+
+
 @import "bootstrap";
