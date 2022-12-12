@@ -1,0 +1,29 @@
+<div class="container mt-5" *ngIf="shop">
+
+  <div class="d-flex flex-row justify-content-center align-items-center gap-2">
+    <h2>{{shop.name}}</h2>
+    <a class="btn btn-primary" href="shop/modify/{{ shop.id }}">Modify</a>
+  </div>
+  <p>Creation date: {{shop.creationDate.getDay()}}/{{shop.creationDate.getMonth()}}/{{shop.creationDate.getFullYear()}}</p>
+  <div>
+
+  <h4>Horary</h4>
+    <div class="d-inline-flex flex-row gap-4">
+      <ng-container  *ngFor="let horary of shop.openingTimesList; let i = index">
+        <div>
+          <h6>{{ getDayFromNumber(i) }}</h6>
+          <p>{{ horary.openingTime }} - {{ horary.closingTime }}</p>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <h4>Available product</h4>
+  <ng-container *ngFor="let product of shop.productList">
+    <div>
+      <p class="d-inline-flex flex-row gap-4">{{product.name}}</p>
+      <a class="btn btn-primary" href="product/{{ product.id }}">Details</a>
+    </div>
+  </ng-container>
+
+</div>

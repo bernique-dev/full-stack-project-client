@@ -16,6 +16,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatNativeDateModule} from "@angular/material/core";
 import {MatInputModule} from "@angular/material/input";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { ShopDetailsComponent } from './shop-details/shop-details.component';
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     AppComponent,
     ShopListComponent,
     ProductListComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    ShopDetailsComponent
   ],
   bootstrap: [AppComponent]
 })
