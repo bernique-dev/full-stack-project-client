@@ -18,9 +18,8 @@ import {MatNativeDateModule} from "@angular/material/core";
 import {MatInputModule} from "@angular/material/input";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import { ShopDetailsComponent } from './shop-details/shop-details.component';
-import { ShopListComponent } from './shop-list/shop-list.component';
-import { CategoryListComponent } from './category-list/category-list.component';
+import {ShopDetailsComponent} from './shop-details/shop-details.component';
+import {ShopListComponent} from './shop-list/shop-list.component';
 
 @NgModule({
   imports: [
@@ -50,8 +49,7 @@ import { CategoryListComponent } from './category-list/category-list.component';
     ProductFormComponent,
     ProductCreateComponent,
     ProductModifyComponent,
-    ShopDetailsComponent,
-    CategoryListComponent
+    ShopDetailsComponent
   ],
   providers: [
     ProductDetailsComponent,
