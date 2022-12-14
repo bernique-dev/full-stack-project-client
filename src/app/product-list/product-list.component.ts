@@ -83,6 +83,8 @@ export class ProductListComponent implements OnInit {
     selectAddedValues: true
   };
 
+  queryParamString : string = ""
+
   constructor(private productService: ProductService, private categoryService: CategoryService) {
   }
 
@@ -97,10 +99,13 @@ export class ProductListComponent implements OnInit {
 
     if (this.categoryId >= 0 && this.shopId >= 0) {
       observable = this.productService.getProductsFromShopAndCategory(this.shopId, this.categoryId)
+      this.queryParamString = "?category=" + this.categoryId + "&shop=" + this.shopId
     } else if (this.categoryId >= 0) {
       observable = this.productService.getProductsFromCategory(this.categoryId)
+      this.queryParamString = "?category=" + this.categoryId
     } else if (this.shopId >= 0) {
       observable = this.productService.getProductsFromShop(this.shopId)
+      this.queryParamString = "?shop=" + this.shopId
     } else {
       observable = this.productService.getProducts()
     }

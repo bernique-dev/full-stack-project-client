@@ -55,67 +55,79 @@ export class ProductFormComponent implements OnInit {
 
   ngOnInit(): void {
 
+    let params = this.route.snapshot.params
+    let queryParams = this.route.snapshot.queryParams
 
-    this.route.params.subscribe(
-      params => {
+    let queryObservables: Observable<any>[] = [
+      this.shopService.getShops(), this.categoryService.getCategories(), this.languageService.getLanguages()
+    ]
+    if (params['id']) {
+      this.productId = params['id']
+      queryObservables.push(this.productService.getProduct(params['id']))
 
-        let queryObservables: Observable<any>[] = [
-          this.shopService.getShops(), this.categoryService.getCategories(), this.languageService.getLanguages()
-        ]
-        if (params['id']) {
-          this.productId = params['id']
-          queryObservables.push(this.productService.getProduct(params['id']))
+      forkJoin(queryObservables).subscribe(results => {
+          this.isModifying = true
+          this.shops = results[0]
+          this.categories = results[1]
+          this.languages = results[2]
 
-          forkJoin(queryObservables).subscribe(results => {
-              this.isModifying = true
-              this.shops = results[0]
-              this.categories = results[1]
-              this.languages = results[2]
+          let product: Product = results[3]
+          product!.shop = {
+            id: product!.shopId
+          }
+          this.categoryIndexes = product.categories.map(c1 => this.categories.findIndex(c2 => c1.id == c2.id) + 1)
 
-              let product: Product = results[3]
-              product!.shop = {
-                id: product!.shopId
-              }
-              this.categoryIndexes = product.categories.map(c1 => this.categories.findIndex(c2 => c1.id == c2.id) + 1)
+          this.productForm.controls['productName'].setValue(product!.name)
+          this.productForm.controls['productDescription'].setValue(product!.description)
+          this.productForm.controls['productPrice'].setValue(product!.price)
+          this.productForm.controls['productCategories'].setValue(product!.categories.map(c => c.id))
+          this.productForm.controls['productShop'].setValue(this.shops.find(s => s.id == product!.shopId))
 
-              this.productForm.controls['productName'].setValue(product!.name)
-              this.productForm.controls['productDescription'].setValue(product!.description)
-              this.productForm.controls['productPrice'].setValue(product!.price)
-              this.productForm.controls['productCategories'].setValue(product!.categories.map(c => c.id))
-              this.productForm.controls['productShop'].setValue(this.shops.find(s => s.id == product!.shopId))
-
-              this.languages.forEach(l => this.translations[l] = new Translation('', ''))
-              for (let prop in product.translations) {
-                let translation = product.translations[prop]
-                this.translations[prop] = new Translation(translation.translatedName, translation.translatedDescription)
-              }
-              let englishIndex = this.languages.indexOf("EN")
-              this.setCurrentTranslationLanguage(this.languages[englishIndex < 0 ? 0 : englishIndex])
-            }
-          )
-        } else {
-
-          forkJoin(queryObservables).subscribe(results => {
-              this.isModifying = false
-              this.shops = results[0]
-              this.categories = results[1]
-              this.languages = results[2]
-
-              this.productForm.controls['productName'].setValue("New Product")
-              this.productForm.controls['productDescription'].setValue("")
-              this.productForm.controls['productPrice'].setValue(0)
-              this.productForm.controls['productCategories'].setValue([])
-              this.productForm.controls['productShop'].setValue({id: this.shops[0].id})
-
-              this.languages.forEach(l => this.translations[l] = new Translation('', ''))
-              let englishIndex = this.languages.indexOf("EN")
-              this.setCurrentTranslationLanguage(this.languages[englishIndex < 0 ? 0 : englishIndex])
-            }
-          )
+          this.languages.forEach(l => this.translations[l] = new Translation('', ''))
+          for (let prop in product.translations) {
+            let translation = product.translations[prop]
+            this.translations[prop] = new Translation(translation.translatedName, translation.translatedDescription)
+          }
+          let englishIndex = this.languages.indexOf("EN")
+          this.setCurrentTranslationLanguage(this.languages[englishIndex < 0 ? 0 : englishIndex])
         }
+      )
+    } else {
 
-      }
-    )
+      forkJoin(queryObservables).subscribe(results => {
+          this.isModifying = false
+          this.shops = results[0]
+          this.categories = results[1]
+          this.languages = results[2]
+
+          let productCategories = []
+          if (queryParams['category']) {
+            let potentialCategory = Number(queryParams['category'])
+            if (this.categories.find(c => c.id == potentialCategory)) {
+              productCategories.push(potentialCategory)
+            }
+          }
+
+          let productShop = this.shops[0]
+          if (Number(queryParams['shop'])) {
+            let potentialShop = this.shops.find(s => s.id == queryParams['shop'])
+            if (potentialShop) {
+              productShop = potentialShop
+            }
+          }
+
+          this.productForm.controls['productName'].setValue("New Product")
+          this.productForm.controls['productDescription'].setValue("")
+          this.productForm.controls['productPrice'].setValue(0)
+          this.productForm.controls['productCategories'].setValue(productCategories)
+          this.productForm.controls['productShop'].setValue(productShop)
+
+          this.languages.forEach(l => this.translations[l] = new Translation('', ''))
+          let englishIndex = this.languages.indexOf("EN")
+          this.setCurrentTranslationLanguage(this.languages[englishIndex < 0 ? 0 : englishIndex])
+        }
+      )
+    }
 
   }
 
