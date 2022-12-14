@@ -7,12 +7,12 @@
   <p>Creation date: {{shop.creationDate.getDay()}}/{{shop.creationDate.getMonth()}}/{{shop.creationDate.getFullYear()}}</p>
   <div>
 
-  <h4>Horary</h4>
+  <h4>Schedule</h4>
     <div class="d-inline-flex flex-row gap-4">
-      <ng-container  *ngFor="let horary of shop.openingTimesList; let i = index">
+      <ng-container  *ngFor="let openingTimes of shop.openingTimesList; let i = index">
         <div>
           <h6>{{ getDayFromNumber(i) }}</h6>
-          <p>{{ horary.openingTime }} - {{ horary.closingTime }}</p>
+          <p>{{ openingTimes.openingTime }} - {{ openingTimes.closingTime }}</p>
         </div>
       </ng-container>
     </div>

@@ -16,7 +16,7 @@ export class TimeOfDay {
     this.minutes = minutes
   }
 
-  public toString = () : string => this.hours + ":" + this.minutes
+  public toString = () : string => (this.hours / 10 >= 1 ? "" : "0") + this.hours + ":" + (this.minutes / 10 >= 1 ? "" : "0") + this.minutes
 
 
   toArray() : number[] {
