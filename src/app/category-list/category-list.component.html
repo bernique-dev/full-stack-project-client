@@ -1,0 +1,67 @@
+<div class="container row m-2">
+  <div class="d-inline-flex justify-content-between">
+    <div class="form-outline d-inline-flex gap-2">
+      <input type="search" id="form1" class="form-control" placeholder="Filter name" [ngModel]="nameFilterValue"
+             (ngModelChange)="filterName($event)"/>
+
+      <div ngbDropdown class="d-inline-flex">
+        <button type="button" class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>
+          {{ currentSorter.name }}
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem *ngFor="let sorter of sorters" (click)="sortWith(sorter)">{{sorter.name}}</button>
+        </div>
+      </div>
+
+    </div>
+    <a class="btn btn-outline-primary" href="category/create">Create</a>
+  </div>
+
+</div>
+
+<div class="container mb-5 category-list-container vw-100">
+  <div class="d-flex justify-content-center row">
+    <ng-container *ngFor="let category of displayedCategories; let categoryIndex = index">
+      <div
+        [ngClass]="{'visually-hidden' : !(categoryIndex >= topCategoryIndex - 1 && categoryIndex < topCategoryIndex + maxCategoryPerPage - 1)}"
+        class="row p-2 bg-white border rounded">
+        <div class="align-items-center align-content-center justify-item-center col-md-9 mt-0">
+          <h5 class="text-truncate">{{category.name}}</h5>
+        </div>
+        <div class="align-items-center align-content-center justify-item-center col-md-3 border-left mt-1">
+          <div class="d-flex flex-column">
+            <a class="btn btn-primary btn-sm btn-primary" href="category/details/{{ category.id }}">Details</a>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link border" [ngClass]="{'disabled': activePageNumber == 1}"
+         (click)="displayCategoriesPage(1)">First</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link border" [ngClass]="{'disabled': activePageNumber == 1}"
+         (click)="displayCategoriesPage(activePageNumber-1)">Previous</a>
+    </li>
+    <ng-container *ngFor="let item of [].constructor(visibleNavPages); let i = index">
+      <li class="page-item" [ngClass]="{'active' : activePageNumber == i + firstNavPage}">
+        <a class="page-link border" (click)="displayCategoriesPage(i + firstNavPage)">
+          {{ ((i + firstNavPage) / 10 >= 1 ? '' : '0') + (i + firstNavPage).toString()}}
+        </a>
+      </li>
+    </ng-container>
+    <li class="page-item">
+      <a class="page-link border" [ngClass]="{'disabled': activePageNumber >= totalNavPagesNumber}"
+         (click)="displayCategoriesPage(activePageNumber+1)">Next</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link border" [ngClass]="{'disabled': activePageNumber >= totalNavPagesNumber}"
+         (click)="displayCategoriesPage(totalNavPagesNumber)">Last</a>
+    </li>
+  </ul>
+</nav>

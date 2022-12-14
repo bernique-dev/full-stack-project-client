@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core'
 import {ProductService} from "../product.service"
 import {Product} from "../shared/product"
-import {ProductSorter} from "../shared/productsorter";
+import {ProductSorter} from "../shared/product-sorter";
 import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
 import {CategoryService} from "../category.service";
 import {Category} from "../shared/category";
