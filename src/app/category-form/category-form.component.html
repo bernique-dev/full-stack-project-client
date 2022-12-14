@@ -1,0 +1,21 @@
+<div class="container vw-100 col-md-10 mt-2" *ngIf="isModifying != undefined">
+  <form [formGroup]="categoryForm" class="form-outline">
+    <div class="d-inline-flex w-100 gap-2 align-content-stretch mb-2">
+      <input class="form-control"
+             required type="text"
+             [ngClass]="{ 'is-valid' : categoryForm.get('categoryName')!.valid, 'is-invalid' : categoryForm.get('categoryName')!.invalid }"
+             minlength="5" formControlName="categoryName" placeholder="Name" value="test"
+      />
+
+    <input class="btn btn-primary form-control" type="submit" value="{{ isModifying ? 'Modify' : 'Create' }}"
+           [disabled]="categoryForm.invalid"
+           (click)="isModifying ? modifyProduct(categoryId) : createProduct()">
+      </div>
+  </form>
+
+  <div>
+    <div *ngIf="categoryForm.get('categoryName')!.invalid">
+      Name must be at least 5 characters long.
+    </div>
+  </div>
+</div>

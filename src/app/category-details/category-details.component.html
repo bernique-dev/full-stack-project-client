@@ -1,0 +1,16 @@
+<div  *ngIf="category">
+
+  <div class="container mt-5 vw-100 mb-2">
+    <h2 class="text-center">{{ category.name }}</h2>
+
+    <a class="btn btn-primary form-control mb-2" href="category/modify/{{ category.id }}">Modify</a>
+    <a class="btn btn-primary form-control" (click)="deleteCategory()">Delete</a>
+
+  </div>
+
+  <h3 class="text-center">Products</h3>
+
+  <app-product-list [categoryId]="category!.id"></app-product-list>
+</div>
+
+

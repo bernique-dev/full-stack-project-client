@@ -21,6 +21,10 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { ShopDetailsComponent } from './shop-details/shop-details.component';
 import { ShopListComponent } from './shop-list/shop-list.component';
 import { CategoryListComponent } from './category-list/category-list.component';
+import { CategoryDetailsComponent } from './category-details/category-details.component';
+import { CategoryFormComponent } from './category-form/category-form.component';
+import { CategoryCreateComponent } from './category-create/category-create.component';
+import { CategoryModifyComponent } from './category-modify/category-modify.component';
 
 @NgModule({
   imports: [
@@ -51,7 +55,11 @@ import { CategoryListComponent } from './category-list/category-list.component';
     ProductCreateComponent,
     ProductModifyComponent,
     ShopDetailsComponent,
-    CategoryListComponent
+    CategoryListComponent,
+    CategoryDetailsComponent,
+    CategoryFormComponent,
+    CategoryCreateComponent,
+    CategoryModifyComponent
   ],
   providers: [
     ProductDetailsComponent,

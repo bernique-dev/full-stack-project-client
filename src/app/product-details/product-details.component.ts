@@ -29,9 +29,6 @@ export class ProductDetailsComponent implements OnInit {
               [this.currentVersion]: new Translation(this.product.name, this.product.description),
               ...product.translations
             }
-          },
-          _ => {
-            this.router.navigateByUrl("products")
           }
         );
       }
@@ -44,7 +41,6 @@ export class ProductDetailsComponent implements OnInit {
         this.router.navigateByUrl("products")
       }
     )
-
   }
 
 }

@@ -8,6 +8,9 @@ import {ShopDetailsComponent} from "./shop-details/shop-details.component";
 import {ProductCreateComponent} from "./product-create/product-create.component";
 import {ProductModifyComponent} from "./product-modify/product-modify.component";
 import {CategoryListComponent} from "./category-list/category-list.component";
+import {CategoryDetailsComponent} from "./category-details/category-details.component";
+import {CategoryModifyComponent} from "./category-modify/category-modify.component";
+import {CategoryCreateComponent} from "./category-create/category-create.component";
 
 const routes: Routes = [
   { path: 'shops', component: ShopListComponent },
@@ -16,7 +19,10 @@ const routes: Routes = [
   { path: 'product/details/:id', component: ProductDetailsComponent },
   { path: 'product/create', component: ProductCreateComponent },
   { path: 'product/modify/:id', component: ProductModifyComponent },
-  { path: 'categories', component: CategoryListComponent }
+  { path: 'categories', component: CategoryListComponent },
+  { path: 'category/details/:id', component: CategoryDetailsComponent },
+  { path: 'category/create', component: CategoryCreateComponent },
+  { path: 'category/modify/:id', component: CategoryModifyComponent }
 ];
 
 @NgModule({

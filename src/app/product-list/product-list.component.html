@@ -41,7 +41,7 @@
           <h5 class="text-truncate">{{product.name}}</h5>
           <div class="mt-1 mb-1 spec-1">
             <ng-container *ngFor="let category of product.categories; let categoryIndex = index">
-              <span>{{ category.name }}</span>
+              <a class="category-link" href="category/details/{{category.id}}">{{ category.name }}</a>
               <span *ngIf="categoryIndex < product.categories.length - 1 " class="dot"></span>
             </ng-container>
           </div>
