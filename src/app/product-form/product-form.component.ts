@@ -31,7 +31,7 @@ export class ProductFormComponent implements OnInit {
     productTranslationName: new FormControl(),
     productTranslationDescription: new FormControl()
   });
-  productId: number = 0
+  productId: number = -1
 
   isModifying?: boolean = undefined
   shops: Shop[] = []
@@ -81,7 +81,7 @@ export class ProductFormComponent implements OnInit {
               this.productForm.controls['productName'].setValue(product!.name)
               this.productForm.controls['productDescription'].setValue(product!.description)
               this.productForm.controls['productPrice'].setValue(product!.price)
-              this.productForm.controls['productCategories'].setValue(product!.categories.map(c1 => this.categories.findIndex(c2 => c1.id == c2.id) + 1))
+              this.productForm.controls['productCategories'].setValue(product!.categories.map(c => c.id))
               this.productForm.controls['productShop'].setValue(this.shops.find(s => s.id == product!.shopId))
 
               this.languages.forEach(l => this.translations[l] = new Translation('', ''))
@@ -143,7 +143,7 @@ export class ProductFormComponent implements OnInit {
       name: this.productForm.controls['productName'].value,
       description: this.productForm.controls['productDescription'].value,
       price: this.productForm.controls['productPrice'].value,
-      categories: this.productForm.controls['productCategories'].value.map((idx: number) => this.categories[idx - 1]),
+      categories: this.productForm.controls['productCategories'].value.map((idx: number) => this.categories.find(c => idx == c.id)),
       shop: {id: this.productForm.controls['productShop'].value.id},
       shopId: this.productForm.controls['productShop'].value.id,
       shopName: this.productForm.controls['productShop'].value.name,
