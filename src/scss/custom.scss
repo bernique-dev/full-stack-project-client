@@ -4,10 +4,32 @@ $theme-colors: (
   primary: rgba(69, 123, 157, 255)
 );
 
-
-
 .mat-form-field-wrapper {
   padding-bottom: 0 !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.3em 0;
+}
+
+
+.page-item {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none;
+}
+
+.page-item.active > .page-link {
+  background-color: var(--bs-gray-dark) !important;
+  color: var(--bs-white) !important;
+}
+
+.page-link:not(.disabled), .page-link:not(.disabled):hover {
+  color: var(--bs-gray-dark) ;
+}
+
+.dropdown-item.active {
+  background-color: var(--bs-primary);
 }
 
 

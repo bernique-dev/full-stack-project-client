@@ -5,6 +5,7 @@ import {ShopSorter} from "../shared/shopsorter";
 import {TimeOfDay} from "../shared/time-of-day";
 import {DayOfWeek} from "../shared/day-of-week";
 import {Product} from "../shared/product";
+import {DAYOFWEEKNAMES} from "../shared/week-day-names";
 
 
 @Component({
@@ -123,7 +124,7 @@ export class ShopListComponent implements OnInit {
   }
 
   getDayFromNumber(nb: number) {
-    return DayOfWeek[(nb as DayOfWeek)]
+    return DAYOFWEEKNAMES.get(nb as DayOfWeek)
   }
 
   displayShopsPage(pageNumber: number) {

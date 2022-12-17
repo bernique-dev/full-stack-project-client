@@ -11,10 +11,6 @@
   display: inline-block
 }
 
-* {
-  font-family: Roboto;
-}
-
 .mat-form-field-underline {
   display: none;
 }
