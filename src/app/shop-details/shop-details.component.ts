@@ -40,6 +40,11 @@ export class ShopDetailsComponent implements OnInit {
                 openingTime: openingTime,
                 closingTime: closingTime
               })
+            } else {
+              timesList.push({
+                openingTime: undefined,
+                closingTime: undefined
+              })
             }
             dayCnt = (dayCnt + 1) % 7
           }

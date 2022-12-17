@@ -1,8 +1,8 @@
 import {TimeOfDay} from "./time-of-day";
 
-export interface OpeningTimes {
+export class OpeningTimes {
 
-  openingTime : TimeOfDay
-  closingTime : TimeOfDay
+  openingTime : TimeOfDay | undefined
+  closingTime : TimeOfDay | undefined
 
 }

@@ -101,6 +101,11 @@ export class ShopListComponent implements OnInit {
               openingTime: openingTime,
               closingTime: closingTime
             })
+          } else {
+            timesList.push({
+              openingTime: undefined,
+              closingTime: undefined
+            })
           }
           // s.timesList(dayCnt as WeekDay, )
           dayCnt = (dayCnt + 1) % 7

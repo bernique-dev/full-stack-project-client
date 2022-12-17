@@ -34,7 +34,7 @@
 
   </div>
 
-  <a id="add-button" class="btn btn-outline-primary" href="shop/add">Create</a>
+  <a id="add-button" class="btn btn-outline-primary" href="shop/create">Create</a>
 </div>
 
 <div class="container mb-5 shop-list-container">
@@ -50,20 +50,25 @@
                 </div>
 
                 <div class="align-items-center col-md-3 align-content-center justify-item-center border-right mt-1">
+                  <div *ngIf="shop.isOnLeave; else isNotOnLeave" class="d-flex flex-column  align-items-center">
+                    <p>On Leave</p>
+                  </div>
                   <div class="d-flex flex-row justify-content-center align-items-center">
-                    <p>{{shop.creationDate.getDay()}}/{{shop.creationDate.getMonth()}}/{{shop.creationDate.getFullYear()}}</p>
+                    <p>{{ shop.creationDate.getDate()}}/{{shop.creationDate.getMonth()+1}}/{{shop.creationDate.getFullYear() }}</p>
                   </div>
                   <div class="d-flex flex-column">
-                    <a class="btn btn-primary btn-sm btn-primary" href="shop/{{ shop.id }}">Details</a>
+                    <a class="btn btn-primary btn-sm btn-primary" href="shop/details/{{ shop.id }}">Details</a>
                   </div>
                 </div>
           </div>
           <div class="d-inline-flex flex-row gap-4">
-            <ng-container  *ngFor="let horary of shop.openingTimesList; let i = index">
-                <div>
-                  <h6>{{ getDayFromNumber(i) }}</h6>
-                  <p>{{ horary.openingTime }} - {{ horary.closingTime }}</p>
+            <ng-container  *ngFor="let openingTimes of shop.openingTimesList; let i = index">
+              <div>
+                <h6>{{ getDayFromNumber(i) }}</h6>
+                <div *ngIf="openingTimes.openingTime; else closedShop">
+                  <p>{{ openingTimes.openingTime }} - {{ openingTimes.closingTime }}</p>
                 </div>
+              </div>
             </ng-container>
           </div>
         </div>
@@ -100,3 +105,12 @@
   </ul>
 </nav>
 
+<ng-template #closedShop>
+  <p>Closed</p>
+</ng-template>
+
+<ng-template #isNotOnLeave>
+  <div class="d-flex flex-column  align-items-center">
+  <p>Open</p>
+  </div>
+</ng-template>

@@ -1,8 +1,8 @@
-import {WeekDay} from "@angular/common";
+import {DayOfWeek} from "./day-of-week";
 
-export const WeekDayNames = new Map<WeekDay, string>( [
-  [WeekDay.Sunday, "Sunday"],
-  [WeekDay.Monday, "Monday"], [WeekDay.Tuesday, "Tuesday"],
-  [WeekDay.Wednesday, "Wednesday"], [WeekDay.Thursday, "Thursday"],
-  [WeekDay.Friday, "Friday"], [WeekDay.Saturday, "Saturday"]
+
+export const WEEKDAYNAMES = new Map<DayOfWeek, string>( [
+  [DayOfWeek.Monday, "Monday"], [DayOfWeek.Tuesday, "Tuesday"],
+  [DayOfWeek.Wednesday, "Wednesday"], [DayOfWeek.Thursday, "Thursday"],
+  [DayOfWeek.Friday, "Friday"], [DayOfWeek.Saturday, "Saturday"], [DayOfWeek.Sunday, "Sunday"]
 ])

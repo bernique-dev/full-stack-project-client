@@ -4,15 +4,21 @@
     <h2>{{shop.name}}</h2>
     <a class="btn btn-primary" href="shop/modify/{{ shop.id }}">Modify</a>
   </div>
-  <p>Creation date: {{shop.creationDate.getDay()}}/{{shop.creationDate.getMonth()}}/{{shop.creationDate.getFullYear()}}</p>
+  <p>Creation date: {{shop.creationDate.getDate()}}/{{shop.creationDate.getMonth()+1}}/{{shop.creationDate.getFullYear()}}</p>
   <div>
+
+    <div *ngIf="shop.isOnLeave; else isNotOnLeave" class="d-flex flex-column  align-items-center">
+      <p>On Leave</p>
+    </div>
 
   <h4>Schedule</h4>
     <div class="d-inline-flex flex-row gap-4">
       <ng-container  *ngFor="let openingTimes of shop.openingTimesList; let i = index">
         <div>
           <h6>{{ getDayFromNumber(i) }}</h6>
-          <p>{{ openingTimes.openingTime }} - {{ openingTimes.closingTime }}</p>
+          <div *ngIf="openingTimes.openingTime; else closedShop">
+            <p>{{ openingTimes.openingTime }} - {{ openingTimes.closingTime }}</p>
+          </div>
         </div>
       </ng-container>
     </div>
@@ -22,3 +28,14 @@
   <app-product-list [shopId]="shop.id"></app-product-list>
 
 </div>
+
+<ng-template #closedShop>
+  <p>Closed</p>
+</ng-template>
+
+<ng-template #isNotOnLeave>
+  <div class="d-flex flex-column">
+    <p>Open</p>
+  </div>
+</ng-template>
+

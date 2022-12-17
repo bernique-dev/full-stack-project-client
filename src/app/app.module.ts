@@ -20,6 +20,9 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ShopDetailsComponent} from './shop-details/shop-details.component';
 import {ShopListComponent} from './shop-list/shop-list.component';
+import { ShopModifyComponent } from './shop-modify/shop-modify.component';
+import { ShopCreateComponent } from './shop-create/shop-create.component';
+import { ShopFormComponent } from './shop-form/shop-form.component';
 
 @NgModule({
   imports: [
@@ -49,7 +52,10 @@ import {ShopListComponent} from './shop-list/shop-list.component';
     ProductFormComponent,
     ProductCreateComponent,
     ProductModifyComponent,
-    ShopDetailsComponent
+    ShopDetailsComponent,
+    ShopModifyComponent,
+    ShopCreateComponent,
+    ShopFormComponent
   ],
   providers: [
     ProductDetailsComponent,
