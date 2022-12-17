@@ -6,6 +6,7 @@ import {TimeOfDay} from "../shared/time-of-day";
 import {DayOfWeek} from "../shared/day-of-week";
 import {Product} from "../shared/product";
 import {DAYOFWEEKNAMES} from "../shared/week-day-names";
+import {DateAdapter} from "@angular/material/core";
 
 
 @Component({
@@ -40,10 +41,10 @@ export class ShopListComponent implements OnInit {
   sorters: ShopSorter[] = [
     {
       name: "Name ↑",
-      function: (s1: Shop, s2: Shop) => s1.name.localeCompare(s2.name)
+      function: (s1: Shop, s2: Shop) => s2.name.localeCompare(s1.name)
     }, {
       name: "Name ↓",
-      function: (s1: Shop, s2: Shop) => s2.name.localeCompare(s1.name)
+      function: (s1: Shop, s2: Shop) => s1.name.localeCompare(s2.name)
     }, {
       name: "Nbr products ↑",
       function: (s1: Shop, s2: Shop) => s2.productList.length - s1.productList.length
@@ -51,10 +52,10 @@ export class ShopListComponent implements OnInit {
       name: "Nbr products ↓",
       function: (s1: Shop, s2: Shop) => s1.productList.length - s2.productList.length
     }, {
-      name: "creation date ↑",
+      name: "Creation date ↑",
       function: (s1: Shop, s2: Shop) => s2.creationDate.getTime() - s1.creationDate.getTime()
     }, {
-      name: "creation date ↓",
+      name: "Creation date ↓",
       function: (s1: Shop, s2: Shop) => s1.creationDate.getTime() - s2.creationDate.getTime()
     }
   ]
@@ -73,7 +74,8 @@ export class ShopListComponent implements OnInit {
     return s.creationDate >= this.minCreationDateValueFilterValue && s.creationDate <= this.maxCreationDateValueFilterValue
   }
 
-  constructor(private shopService : ShopService) {
+  constructor(private shopService : ShopService, private dateAdapter: DateAdapter<Date>) {
+    this.dateAdapter.setLocale('fr-FR');
   }
 
   ngOnInit() {
@@ -108,7 +110,6 @@ export class ShopListComponent implements OnInit {
               closingTime: undefined
             })
           }
-          // s.timesList(dayCnt as WeekDay, )
           dayCnt = (dayCnt + 1) % 7
         }
         s.openingTimesList = timesList
