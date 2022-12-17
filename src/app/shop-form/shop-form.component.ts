@@ -3,7 +3,7 @@ import {ShopService} from "../shop.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Shop} from "../shared/shop";
-import {WEEKDAYNAMES} from "../shared/week-day-names";
+import {DAYOFWEEKNAMES} from "../shared/week-day-names";
 import {OpeningTimes} from "../shared/opening-times";
 import {TimeOfDay} from "../shared/time-of-day";
 import {TimeValidator} from "../shared/time-validator";
@@ -18,7 +18,7 @@ import {DayOfWeek} from "../shared/day-of-week";
 })
 export class ShopFormComponent implements OnInit {
 
-  readonly WEEKDAYNAMES = WEEKDAYNAMES
+  readonly DAYOFWEEKNAMES = DAYOFWEEKNAMES
 
   shopForm = new FormGroup({
     shopName: new FormControl(),

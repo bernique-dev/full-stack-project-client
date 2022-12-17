@@ -15,10 +15,10 @@
         <button type="button" class="btn btn-primary text-truncate" id="dropdownBasic2"
                 [disabled]="shopForm.controls.shopOpeningTime.invalid || shopForm.controls.shopClosingTime.invalid"
                 ngbDropdownToggle>
-          {{ WEEKDAYNAMES.get(shopForm.controls.shopScheduleDay.value) }}
+          {{ DAYOFWEEKNAMES.get(shopForm.controls.shopScheduleDay.value) }}
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button ngbDropdownItem *ngFor="let weekDay of WEEKDAYNAMES | keyvalue"
+          <button ngbDropdownItem *ngFor="let weekDay of DAYOFWEEKNAMES | keyvalue"
                   (click)="setScheduleDay(weekDay.key)"
           >{{ weekDay.value }}</button>
         </div>
