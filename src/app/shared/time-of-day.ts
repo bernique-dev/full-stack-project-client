@@ -10,7 +10,6 @@ export class TimeOfDay {
   hours : number = 0
   minutes : number = 0
 
-
   constructor(hours: number, minutes: number) {
     this.hours = hours
     this.minutes = minutes
@@ -18,6 +17,10 @@ export class TimeOfDay {
 
   public toString = () : string => (this.hours / 10 >= 1 ? "" : "0") + this.hours + ":" + (this.minutes / 10 >= 1 ? "" : "0") + this.minutes
 
+  public static ofString(timeString : string) : TimeOfDay {
+    let t = timeString.split(':')
+    return  new TimeOfDay(Number(t.at(0)), Number(t.at(1)));
+  }
 
   toArray() : number[] {
     return [this.hours, this.minutes]

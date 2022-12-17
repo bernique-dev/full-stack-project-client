@@ -18,13 +18,16 @@ import {MatNativeDateModule} from "@angular/material/core";
 import {MatInputModule} from "@angular/material/input";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import { ShopDetailsComponent } from './shop-details/shop-details.component';
-import { ShopListComponent } from './shop-list/shop-list.component';
-import { CategoryListComponent } from './category-list/category-list.component';
-import { CategoryDetailsComponent } from './category-details/category-details.component';
-import { CategoryFormComponent } from './category-form/category-form.component';
-import { CategoryCreateComponent } from './category-create/category-create.component';
-import { CategoryModifyComponent } from './category-modify/category-modify.component';
+import {ShopDetailsComponent} from './shop-details/shop-details.component';
+import {ShopListComponent} from './shop-list/shop-list.component';
+import {CategoryListComponent} from './category-list/category-list.component';
+import {CategoryDetailsComponent} from './category-details/category-details.component';
+import {CategoryFormComponent} from './category-form/category-form.component';
+import {CategoryCreateComponent} from './category-create/category-create.component';
+import {CategoryModifyComponent} from './category-modify/category-modify.component';
+import {ShopModifyComponent} from './shop-modify/shop-modify.component';
+import {ShopCreateComponent} from './shop-create/shop-create.component';
+import {ShopFormComponent} from './shop-form/shop-form.component';
 
 @NgModule({
   imports: [
@@ -48,13 +51,16 @@ import { CategoryModifyComponent } from './category-modify/category-modify.compo
   ],
   declarations: [
     AppComponent,
-    ShopListComponent,
     ProductListComponent,
     ProductDetailsComponent,
     ProductFormComponent,
     ProductCreateComponent,
     ProductModifyComponent,
+    ShopListComponent,
     ShopDetailsComponent,
+    ShopModifyComponent,
+    ShopCreateComponent,
+    ShopFormComponent,
     CategoryListComponent,
     CategoryDetailsComponent,
     CategoryFormComponent,

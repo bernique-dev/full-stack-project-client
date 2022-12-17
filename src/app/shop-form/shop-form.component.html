@@ -1,0 +1,40 @@
+<div class="container vw-100 col-md-10 mt-2">
+  <form [formGroup]="shopForm" class="form-outline">
+    <div class="d-inline-flex align-items-center justify-content-center flex-row w-100">
+      <p class="w-25 m-0">Name</p>
+      <input type="text" id="NameInput" name="shopName" formControlName="shopName" class="form-control"/>
+    </div>
+    <div class="d-inline-flex flex-row w-100 gap-2 my-2">
+      <div class="d-inline-flex flex-row w-100 align-items-center justify-content-center">
+        <p class="w-50 m-0">Currently open</p>
+        <input type="checkbox" id="IsOnLeaveInput" name="shopIsOnLeave" formControlName="shopIsOnLeave"/>
+      </div>
+
+
+      <div ngbDropdown>
+        <button type="button" class="btn btn-primary text-truncate" id="dropdownBasic2"
+                [disabled]="shopForm.controls.shopOpeningTime.invalid || shopForm.controls.shopClosingTime.invalid"
+                ngbDropdownToggle>
+          {{ WEEKDAYNAMES.get(shopForm.controls.shopScheduleDay.value) }}
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem *ngFor="let weekDay of WEEKDAYNAMES | keyvalue"
+                  (click)="setScheduleDay(weekDay.key)"
+          >{{ weekDay.value }}</button>
+        </div>
+      </div>
+
+      <input type="time" id="OpeningInput" name="shopOpeningTime" (change)="modifyTime()"
+             (keydown)="modifyTime()" formControlName="shopOpeningTime" class="form-control"/>
+      <input type="time" id="ClosingInput" name="shopClosingTime" (change)="modifyTime()"
+             (keydown)="modifyTime()" formControlName="shopClosingTime" class="form-control"/>
+
+      <input class="btn btn-primary form-control w-50" type="submit" value="Clear"
+             (click)="clearDaySchedule()">
+
+    </div>
+    <input class="btn btn-primary form-control" type="submit" value="{{ isModifying ? 'Modify' : 'Create' }}"
+           [disabled]="shopForm.invalid"
+           (click)="isModifying ? modifyShop(shopId) : createShop()">
+  </form>
+</div>
