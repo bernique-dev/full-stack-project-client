@@ -6,7 +6,7 @@
     </div>
     <div class="d-inline-flex flex-row w-100 gap-2 my-2">
       <div class="d-inline-flex flex-row w-100 align-items-center justify-content-center">
-        <p class="w-50 m-0">Currently open</p>
+        <p class="w-50 m-0">En congé</p>
         <input type="checkbox" id="IsOnLeaveInput" name="shopIsOnLeave" formControlName="shopIsOnLeave"/>
       </div>
 
@@ -29,11 +29,11 @@
       <input type="time" id="ClosingInput" name="shopClosingTime" (change)="modifyTime()"
              (keydown)="modifyTime()" formControlName="shopClosingTime" class="form-control"/>
 
-      <input class="btn btn-primary form-control w-50" type="submit" value="Clear"
+      <input class="btn btn-primary form-control w-50" type="submit" value="Supprimer"
              (click)="clearDaySchedule()">
 
     </div>
-    <input class="btn btn-primary form-control" type="submit" value="{{ isModifying ? 'Modify' : 'Create' }}"
+    <input class="btn btn-primary form-control" type="submit" value="{{ isModifying ? 'Modifier' : 'Créer' }}"
            [disabled]="shopForm.invalid"
            (click)="isModifying ? modifyShop(shopId) : createShop()">
   </form>

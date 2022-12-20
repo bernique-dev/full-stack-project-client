@@ -2,13 +2,13 @@
 
   <div class="d-flex flex-row justify-content-center align-items-center gap-2">
     <h2>{{shop.name}}</h2>
-    <a class="btn btn-primary" href="shop/modify/{{ shop.id }}">Modify</a>
+    <a class="btn btn-primary" href="shop/modify/{{ shop.id }}">Modifier</a>
   </div>
-  <p>Creation date: {{shop.creationDate.getDate()}}/{{shop.creationDate.getMonth()+1}}/{{shop.creationDate.getFullYear()}}</p>
+  <p class="text-center">Creation date: {{shop.creationDate.getDate()}}/{{shop.creationDate.getMonth()+1}}/{{shop.creationDate.getFullYear()}}</p>
   <div>
 
-    <div *ngIf="shop.isOnLeave; else isNotOnLeave" class="d-flex flex-column  align-items-center">
-      <p>On Leave</p>
+    <div class="d-flex flex-column align-items-center">
+      <p *ngIf="shop.isOnLeave; else isNotOnLeave">En congé</p>
     </div>
 
   <h4>Schedule</h4>
@@ -24,18 +24,16 @@
     </div>
   </div>
 
-  <h4>Available product(s)</h4>
+  <h4>Produit(s) disponible(s)</h4>
   <app-product-list [shopId]="shop.id"></app-product-list>
 
 </div>
 
 <ng-template #closedShop>
-  <p>Closed</p>
+  <p>Fermé</p>
 </ng-template>
 
 <ng-template #isNotOnLeave>
-  <div class="d-flex flex-column">
-    <p>Open</p>
-  </div>
+    <p>Ouvert</p>
 </ng-template>
 

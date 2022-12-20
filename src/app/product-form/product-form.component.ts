@@ -7,7 +7,7 @@ import {Category} from "../shared/category";
 import {ShopService} from "../shop.service";
 import {CategoryService} from "../category.service";
 import {Shop} from "../shared/shop";
-import {IMultiSelectSettings} from "ngx-bootstrap-multiselect";
+import {IMultiSelectSettings, IMultiSelectTexts} from "ngx-bootstrap-multiselect";
 import {FormControl, FormGroup} from "@angular/forms";
 import {LanguageService} from "../language.service";
 import {Translation} from "../shared/translation";
@@ -43,6 +43,10 @@ export class ProductFormComponent implements OnInit {
   mySettings: IMultiSelectSettings = {
     dynamicTitleMaxItems: 1
   };
+
+  myTexts: IMultiSelectTexts = {
+    defaultTitle: "Sélectionner"
+  }
 
   translations: { [key: string]: Translation } = {}
 
@@ -116,7 +120,7 @@ export class ProductFormComponent implements OnInit {
             }
           }
 
-          this.productForm.controls['productName'].setValue("New Product")
+          this.productForm.controls['productName'].setValue("Nouveau Produit")
           this.productForm.controls['productDescription'].setValue("")
           this.productForm.controls['productPrice'].setValue(0)
           this.productForm.controls['productCategories'].setValue(productCategories)

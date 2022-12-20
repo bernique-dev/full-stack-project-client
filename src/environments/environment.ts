@@ -5,7 +5,7 @@
 import {HttpHeaders} from "@angular/common/http";
 
 export const environment = {
-  production: false,
+  production: true,
   apiUrl: 'http://localhost:8080',
   productsUrl: 'http://localhost:8080/products',
   categoriesUrl: 'http://localhost:8080/categories',

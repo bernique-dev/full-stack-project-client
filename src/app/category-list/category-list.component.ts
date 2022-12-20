@@ -27,15 +27,15 @@ export class CategoryListComponent implements OnInit {
 
   //  Sorting
   currentSorter: CategorySorter = {
-    name: "Sort",
+    name: "Trier",
     function: (p1, p2) => p1.id - p2.id
   }
   sorters: CategorySorter[] = [
     {
-      name: "Name ↑",
+      name: "Nom ↑",
       function: (c1: Category, c2: Category) => c2.name.localeCompare(c1.name)
     }, {
-      name: "Name ↓",
+      name: "Nom ↓",
       function: (c1: Category, c2: Category) => c1.name.localeCompare(c2.name)
     }
   ]

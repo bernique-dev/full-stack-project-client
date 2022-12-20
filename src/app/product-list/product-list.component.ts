@@ -5,7 +5,7 @@ import {ProductSorter} from "../shared/product-sorter";
 import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
 import {CategoryService} from "../category.service";
 import {Category} from "../shared/category";
-import {IMultiSelectSettings} from "ngx-bootstrap-multiselect";
+import {IMultiSelectSettings, IMultiSelectTexts} from "ngx-bootstrap-multiselect";
 
 @Component({
   selector: 'app-product-list',
@@ -34,21 +34,21 @@ export class ProductListComponent implements OnInit {
 
   //  Sorting
   currentSorter: ProductSorter = {
-    name: "Sort",
+    name: "Trier",
     function: (p1, p2) => p1.id - p2.id
   }
   sorters: ProductSorter[] = [
     {
-      name: "Name ↑",
+      name: "Nom ↑",
       function: (p1: Product, p2: Product) => p2.name.localeCompare(p1.name)
     }, {
-      name: "Name ↓",
+      name: "Nom ↓",
       function: (p1: Product, p2: Product) => p1.name.localeCompare(p2.name)
     }, {
-      name: "Price ↑",
+      name: "Prix ↑",
       function: (p1: Product, p2: Product) => p2.price - p1.price
     }, {
-      name: "Price ↓",
+      name: "Prix ↓",
       function: (p1: Product, p2: Product) => p1.price - p2.price
     }
   ]
@@ -82,6 +82,10 @@ export class ProductListComponent implements OnInit {
     dynamicTitleMaxItems: 1,
     selectAddedValues: true
   };
+
+  myTexts: IMultiSelectTexts = {
+    defaultTitle: "Sélectionner"
+  }
 
   queryParamString : string = ""
 

@@ -4,10 +4,10 @@
       <input class="form-control"
              required type="text"
              [ngClass]="{ 'is-valid' : categoryForm.get('categoryName')!.valid, 'is-invalid' : categoryForm.get('categoryName')!.invalid }"
-             minlength="5" formControlName="categoryName" placeholder="Name" value="test"
+             minlength="5" formControlName="categoryName" placeholder="Name"
       />
 
-    <input class="btn btn-primary form-control" type="submit" value="{{ isModifying ? 'Modify' : 'Create' }}"
+    <input class="btn btn-primary form-control" type="submit" value="{{ isModifying ? 'Modifier' : 'Créer' }}"
            [disabled]="categoryForm.invalid"
            (click)="isModifying ? modifyProduct(categoryId) : createProduct()">
       </div>
@@ -15,7 +15,7 @@
 
   <div>
     <div *ngIf="categoryForm.get('categoryName')!.invalid">
-      Name must be at least 5 characters long.
+      Le nom doit contenir au moins 5 caractères.
     </div>
   </div>
 </div>

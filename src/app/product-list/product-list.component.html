@@ -1,22 +1,22 @@
 <div class="container row m-2">
   <div class="d-inline-flex justify-content-between">
     <div class="form-outline d-inline-flex">
-      <input type="search" id="form1" class="form-control" placeholder="Filter name" [ngModel]="nameFilterValue"
+      <input type="search" id="form1" class="form-control" placeholder="Nom" [ngModel]="nameFilterValue"
              (ngModelChange)="filterName($event)"/>
       <input type="search" id="form2" class="form-control mx-1" placeholder="Filter description"
              [ngModel]="descriptionFilterValue" (ngModelChange)="filterDescription($event)"/>
 
-      <input type="number" class="form-control w-25 mx-1" aria-label="Min" placeholder="Min" min="0"
+      <input type="number" class="form-control w-25 mx-1" aria-label="Min" placeholder="Prix min" min="0"
              [ngModel]="minPriceFilterValue" (ngModelChange)="filterMinPrice($event)"/>
-      <input type="number" class="form-control w-25" aria-label="Max" placeholder="Max" min="0"
+      <input type="number" class="form-control w-25 mx-1" aria-label="Max" placeholder="Prix max" min="0"
              [ngModel]="maxPriceFilterValue" (ngModelChange)="filterMaxPrice($event)"/>
 
-      <ngx-bootstrap-multiselect *ngIf="categoryId < 0" class="multi-select mx-1" [options]="categories" [(ngModel)]="optionsModel"
-                                 [settings]="mySettings"
+      <ngx-bootstrap-multiselect *ngIf="categoryId < 0" class="multi-select" [options]="categories" [(ngModel)]="optionsModel"
+                                 [settings]="mySettings" [texts]="myTexts"
                                  (ngModelChange)="filterCategories($event)">
       </ngx-bootstrap-multiselect>
 
-      <div ngbDropdown class="d-inline-flex">
+      <div ngbDropdown class="d-inline-flex mx-1">
         <button type="button" class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>
           {{ currentSorter.name }}
         </button>
@@ -26,7 +26,7 @@
       </div>
 
     </div>
-    <a class="btn btn-outline-primary" href="product/create{{queryParamString}}">Create</a>
+    <a class="btn btn-outline-primary" href="product/create{{queryParamString}}">Créer</a>
   </div>
 
 </div>
@@ -49,13 +49,13 @@
         </div>
         <div class="align-items-center align-content-center justify-item-center col-md-3 border-left mt-1">
           <div class="d-flex flex-row justify-content-center align-items-center">
-            <h4>${{product.price}}</h4>
+            <h4>{{product.price}}€</h4>
           </div>
           <div class="d-flex flex-row justify-content-center align-items-center text-truncate">
             <h5>{{ product.shopName }}</h5>
           </div>
           <div class="d-flex flex-column">
-            <a class="btn btn-primary btn-sm btn-primary" href="product/details/{{ product.id }}">Details</a>
+            <a class="btn btn-primary btn-sm btn-primary" href="product/details/{{ product.id }}">Détails</a>
           </div>
         </div>
       </div>
@@ -67,11 +67,11 @@
   <ul class="pagination">
     <li class="page-item">
       <a class="page-link border" [ngClass]="{'disabled': activePageNumber == 1}"
-         (click)="displayProductsPage(1)">First</a>
+         (click)="displayProductsPage(1)">Premier</a>
     </li>
     <li class="page-item">
       <a class="page-link border" [ngClass]="{'disabled': activePageNumber == 1}"
-         (click)="displayProductsPage(activePageNumber-1)">Previous</a>
+         (click)="displayProductsPage(activePageNumber-1)">Précédent</a>
     </li>
     <ng-container *ngFor="let item of [].constructor(visibleNavPages); let i = index">
       <li class="page-item" [ngClass]="{'active' : activePageNumber == i + firstNavPage}">
@@ -82,11 +82,11 @@
     </ng-container>
     <li class="page-item">
       <a class="page-link border" [ngClass]="{'disabled': activePageNumber >= totalNavPagesNumber}"
-         (click)="displayProductsPage(activePageNumber+1)">Next</a>
+         (click)="displayProductsPage(activePageNumber+1)">Suivant</a>
     </li>
     <li class="page-item">
       <a class="page-link border" [ngClass]="{'disabled': activePageNumber >= totalNavPagesNumber}"
-         (click)="displayProductsPage(totalNavPagesNumber)">Last</a>
+         (click)="displayProductsPage(totalNavPagesNumber)">Dernier</a>
     </li>
   </ul>
 </nav>

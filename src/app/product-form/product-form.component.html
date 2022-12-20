@@ -8,11 +8,11 @@
       />
       <div>
         <div *ngIf="productForm.get('productName')!.invalid">
-          Name must be at least 5 characters long.
+          Le nom doit être composé d'au moins 5 caractères.
         </div>
       </div>
-      <ngx-bootstrap-multiselect class="multi-select" [options]="categories"
-                                 [settings]="mySettings" formControlName="productCategories"
+      <ngx-bootstrap-multiselect class="multi-select" [options]="categories" aria-placeholder="test"
+                                 [settings]="mySettings" [texts]="myTexts" formControlName="productCategories"
                                  (added)="sortFormCategories()">
       </ngx-bootstrap-multiselect>
 
@@ -51,7 +51,7 @@
       />
       <div>
         <div *ngIf="productForm.get('productTranslationLanguage')!.invalid">
-          Name must be at least 5 characters long.
+          Le nom doit être composé d'au moins 5 caractères.
         </div>
       </div>
       <div ngbDropdown>
@@ -75,7 +75,7 @@
               (input)="changeCurrentTranslation()"></textarea>
 
 
-    <input class="btn btn-primary form-control" type="submit" value="{{ isModifying ? 'Modify' : 'Create' }}"
+    <input class="btn btn-primary form-control" type="submit" value="{{ isModifying ? 'Modifier' : 'Créer' }}"
            [disabled]="productForm.invalid"
            (click)="isModifying ? modifyProduct(productId) : createProduct()">
   </form>

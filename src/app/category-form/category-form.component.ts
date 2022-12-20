@@ -36,7 +36,7 @@ export class CategoryFormComponent implements OnInit {
           )
         } else {
           this.isModifying = false
-          this.categoryForm.controls['categoryName'].setValue("New category")
+          this.categoryForm.controls['categoryName'].setValue("Nouvelle catégorie")
         }
 
       }

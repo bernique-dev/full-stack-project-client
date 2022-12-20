@@ -34,28 +34,28 @@ export class ShopListComponent implements OnInit {
 
   //  Sorting
   currentSorter: ShopSorter = {
-    name: "Sort",
+    name: "Trier",
     function: (s1, s2) => s1.id - s2.id
   }
 
   sorters: ShopSorter[] = [
     {
-      name: "Name ↑",
+      name: "Nom ↑",
       function: (s1: Shop, s2: Shop) => s2.name.localeCompare(s1.name)
     }, {
-      name: "Name ↓",
+      name: "Nom ↓",
       function: (s1: Shop, s2: Shop) => s1.name.localeCompare(s2.name)
     }, {
-      name: "Nbr products ↑",
+      name: "Nb produits ↑",
       function: (s1: Shop, s2: Shop) => s2.productList.length - s1.productList.length
     }, {
-      name: "Nbr products ↓",
+      name: "Nb produits ↓",
       function: (s1: Shop, s2: Shop) => s1.productList.length - s2.productList.length
     }, {
-      name: "Creation date ↑",
+      name: "Date de création ↑",
       function: (s1: Shop, s2: Shop) => s2.creationDate.getTime() - s1.creationDate.getTime()
     }, {
-      name: "Creation date ↓",
+      name: "Date de création ↓",
       function: (s1: Shop, s2: Shop) => s1.creationDate.getTime() - s2.creationDate.getTime()
     }
   ]
@@ -119,6 +119,10 @@ export class ShopListComponent implements OnInit {
 
       this.calculatePagesNumber()
       this.displayShopsPage(1)
+
+      this.minNbrProductFilterValue = Math.min(...this.shops.map(s=>s.productList.length))
+      this.maxNbrProductFilterValue = Math.max(...this.shops.map(s=>s.productList.length))
+
       this.minCreationDateValueFilterValue = new Date(Math.min(...this.shops.map(s=>s.creationDate.getTime())));
       this.maxCreationDateValueFilterValue = new Date(Math.max(...this.shops.map(s=>s.creationDate.getTime())));
     });
@@ -170,11 +174,17 @@ export class ShopListComponent implements OnInit {
 
   filterMinNbrProductFilterValue(filterValue: number) {
     this.minNbrProductFilterValue = filterValue != null ? filterValue : this.minNbrProductFilterValue
+    if (this.maxNbrProductFilterValue < this.minNbrProductFilterValue) {
+      this.maxNbrProductFilterValue = this.minNbrProductFilterValue
+    }
     this.filterShops();
   }
 
   filterMaxNbrProductFilterValue(filterValue: number) {
     this.maxNbrProductFilterValue = filterValue != null ? filterValue : this.maxNbrProductFilterValue
+    if (this.minNbrProductFilterValue > this.maxNbrProductFilterValue) {
+      this.minNbrProductFilterValue = this.maxNbrProductFilterValue
+    }
     this.filterShops();
   }
 
