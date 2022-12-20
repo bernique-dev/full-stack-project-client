@@ -13,12 +13,14 @@ import {CategoryDetailsComponent} from "./category-details/category-details.comp
 import {CategoryModifyComponent} from "./category-modify/category-modify.component";
 import {CategoryCreateComponent} from "./category-create/category-create.component";
 import {ShopCreateComponent} from "./shop-create/shop-create.component";
+import {HomeComponent} from "./home/home.component";
 
 const routes: Routes = [
+  { path: '', component: HomeComponent },
   { path: 'shops', component: ShopListComponent },
-  {path: 'shop/details/:id', component: ShopDetailsComponent},
-  {path: 'shop/modify/:id', component: ShopModifyComponent},
-  {path: 'shop/create', component: ShopCreateComponent},
+  { path: 'shop/details/:id', component: ShopDetailsComponent},
+  { path: 'shop/modify/:id', component: ShopModifyComponent},
+  { path: 'shop/create', component: ShopCreateComponent},
   { path: 'products', component: ProductListComponent },
   { path: 'product/details/:id', component: ProductDetailsComponent },
   { path: 'product/create', component: ProductCreateComponent },

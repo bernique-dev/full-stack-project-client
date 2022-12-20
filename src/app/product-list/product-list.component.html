@@ -3,7 +3,7 @@
     <div class="form-outline d-inline-flex">
       <input type="search" id="form1" class="form-control" placeholder="Nom" [ngModel]="nameFilterValue"
              (ngModelChange)="filterName($event)"/>
-      <input type="search" id="form2" class="form-control mx-1" placeholder="Filter description"
+      <input type="search" id="form2" class="form-control mx-1" placeholder="Description"
              [ngModel]="descriptionFilterValue" (ngModelChange)="filterDescription($event)"/>
 
       <input type="number" class="form-control w-25 mx-1" aria-label="Min" placeholder="Prix min" min="0"

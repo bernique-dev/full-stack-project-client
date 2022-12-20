@@ -28,6 +28,7 @@ import {CategoryModifyComponent} from './category-modify/category-modify.compone
 import {ShopModifyComponent} from './shop-modify/shop-modify.component';
 import {ShopCreateComponent} from './shop-create/shop-create.component';
 import {ShopFormComponent} from './shop-form/shop-form.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   imports: [
@@ -65,7 +66,8 @@ import {ShopFormComponent} from './shop-form/shop-form.component';
     CategoryDetailsComponent,
     CategoryFormComponent,
     CategoryCreateComponent,
-    CategoryModifyComponent
+    CategoryModifyComponent,
+    HomeComponent
   ],
   providers: [
     ProductDetailsComponent,
