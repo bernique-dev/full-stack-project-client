@@ -1,9 +1,11 @@
 <nav class="navbar top-navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand btn btn-link" href="">AMAZO</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" (click)="isCollapsed = !isCollapsed"
+          [attr.aria-expanded]="!isCollapsed" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+          aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngbCollapse]="isCollapsed">
     <div class="navbar-nav">
       <a class="btn btn-link" href="shops">Boutiques</a>
       <a class="btn btn-link" href="categories">Catégories</a>
