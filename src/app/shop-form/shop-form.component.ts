@@ -34,7 +34,8 @@ export class ShopFormComponent implements OnInit {
 
   isModifying?: boolean = undefined
 
-  constructor(private route: ActivatedRoute, private router: Router, private shopService : ShopService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private shopService: ShopService) {
+  }
 
   ngOnInit(): void {
 
@@ -43,53 +44,55 @@ export class ShopFormComponent implements OnInit {
         if (params['id']) {
           this.shopId = params['id']
           this.isModifying = true
-          this.shopService.getShop(this.shopId).subscribe(
-            shop => {
+          this.shopService.getShop(this.shopId).subscribe({
+              next: shop => {
 
-              //parsingTime
-              let timesList = []
-              let dayCnt = 1;
-              for (let dayTimesString of shop.openingTimes.split(';')) {
-                if (dayTimesString.length > 0) {
-                  let dayTimesValues = dayTimesString.split('-')
-                  let openingTimeString = dayTimesValues[0]
-                  let openingTimeValues = openingTimeString.split(':').map(v => Number(v))
-                  let openingTime = new TimeOfDay(openingTimeValues[0], openingTimeValues[1])
+                //parsingTime
+                let timesList = []
+                let dayCnt = 1;
+                for (let dayTimesString of shop.openingTimes.split(';')) {
+                  if (dayTimesString.length > 0) {
+                    let dayTimesValues = dayTimesString.split('-')
+                    let openingTimeString = dayTimesValues[0]
+                    let openingTimeValues = openingTimeString.split(':').map(v => Number(v))
+                    let openingTime = new TimeOfDay(openingTimeValues[0], openingTimeValues[1])
 
-                  let closingTimeString = dayTimesValues[1]
-                  let closingTimeValues = closingTimeString.split(':').map(v => Number(v))
-                  let closingTime = new TimeOfDay(closingTimeValues[0], closingTimeValues[1])
+                    let closingTimeString = dayTimesValues[1]
+                    let closingTimeValues = closingTimeString.split(':').map(v => Number(v))
+                    let closingTime = new TimeOfDay(closingTimeValues[0], closingTimeValues[1])
 
-                  timesList.push({
-                    openingTime: openingTime,
-                    closingTime: closingTime
-                  })
-                } else {
-                  timesList.push({
-                    openingTime: undefined,
-                    closingTime: undefined
-                  })
+                    timesList.push({
+                      openingTime: openingTime,
+                      closingTime: closingTime
+                    })
+                  } else {
+                    timesList.push({
+                      openingTime: undefined,
+                      closingTime: undefined
+                    })
+                  }
+                  // s.timesList(dayCnt as WeekDay, )
+                  dayCnt = (dayCnt + 1) % 7
                 }
-                // s.timesList(dayCnt as WeekDay, )
-                dayCnt = (dayCnt + 1) % 7
+                this.openingTimesList = timesList
+                this.shopForm.controls['shopName'].setValue(shop.name);
+                this.shopForm.controls['shopIsOnLeave'].setValue(shop.isOnLeave);
+                console.log(shop.productList)
+                this.setScheduleDay(DayOfWeek.Monday);
+              },
+              error: error => {
+                this.router.navigateByUrl('error/' + error.status)
               }
-              this.openingTimesList = timesList
-              this.shopForm.controls['shopName'].setValue(shop.name);
-              this.shopForm.controls['shopIsOnLeave'].setValue(shop.isOnLeave);
-              console.log(shop.productList)
-              this.setScheduleDay(DayOfWeek.Monday);
             }
           )
         } else {
           this.isModifying = false
           for (let day of Object.keys(DayOfWeek).filter((v) => isNaN(Number(v)))) {
-            console.log(day)
             this.openingTimesList.push({
               openingTime: undefined,
               closingTime: undefined
             })
           }
-          console.log(this.openingTimesList)
           this.shopForm.controls['shopName'].setValue('New Shop')
           this.shopForm.controls['shopIsOnLeave'].setValue(false)
           this.shopForm.controls['shopClosingTime'].setValue("")
@@ -100,25 +103,33 @@ export class ShopFormComponent implements OnInit {
     )
   }
 
-  modifyShop(shopId : number) {
-    console.log(this.generateShop(shopId))
-     this.shopService.modifyShop(this.generateShop(shopId)).subscribe(
-      result => this.router.navigateByUrl('shop/details/' + result)
+  modifyShop(shopId: number) {
+    this.shopService.modifyShop(this.generateShop(shopId)).subscribe(
+      {
+        next: result => this.router.navigateByUrl('shop/details/' + result),
+        error: error => {
+          this.router.navigateByUrl('error/' + error.status)
+        }
+      }
     )
   }
 
   createShop() {
-    console.log(this.generateShop(0))
     this.shopService.addShop(this.generateShop(0)).subscribe(
-      result => this.router.navigateByUrl('shop/details/' + result)
+      {
+        next: result => this.router.navigateByUrl('shop/details/' + result),
+        error: error => {
+          this.router.navigateByUrl('error/' + error.status)
+        }
+      }
     )
 
   }
 
-  private generateShop(id : number): Shop {
-   let scheduleStrings = []
+  private generateShop(id: number): Shop {
+    let scheduleStrings = []
     for (let schedule of this.openingTimesList) {
-      if(schedule.openingTime == undefined || schedule.closingTime == undefined) {
+      if (schedule.openingTime == undefined || schedule.closingTime == undefined) {
         scheduleStrings.push("")
       } else {
         scheduleStrings.push(schedule.openingTime + "-" + schedule.closingTime)
@@ -135,7 +146,7 @@ export class ShopFormComponent implements OnInit {
     }
   }
 
-  setScheduleDay(day : DayOfWeek) {
+  setScheduleDay(day: DayOfWeek) {
     this.shopForm.controls['shopScheduleDay'].setValue(day);
     let shopOpeningTime = this.openingTimesList[day.valueOf()].openingTime
     let shopClosingTime = this.openingTimesList[day.valueOf()].closingTime
@@ -190,17 +201,17 @@ export class ShopFormComponent implements OnInit {
   }
 
   modifyOpeningTimes() {
-      if (this.shopForm.valid) {
-        let shopOpeningTime = this.shopForm.controls['shopOpeningTime'].value
-        let shopClosingTime = this.shopForm.controls['shopClosingTime'].value
-        this.openingTimesList[this.shopForm.controls['shopScheduleDay'].value] = {
-          openingTime : typeof shopOpeningTime == 'string' ?
-                        TimeOfDay.ofString(shopOpeningTime)
-                        : shopOpeningTime,
-          closingTime : typeof shopClosingTime == 'string' ?
-                        TimeOfDay.ofString(shopClosingTime)
-                        : shopClosingTime
-        } as OpeningTimes
+    if (this.shopForm.valid) {
+      let shopOpeningTime = this.shopForm.controls['shopOpeningTime'].value
+      let shopClosingTime = this.shopForm.controls['shopClosingTime'].value
+      this.openingTimesList[this.shopForm.controls['shopScheduleDay'].value] = {
+        openingTime: typeof shopOpeningTime == 'string' ?
+          TimeOfDay.ofString(shopOpeningTime)
+          : shopOpeningTime,
+        closingTime: typeof shopClosingTime == 'string' ?
+          TimeOfDay.ofString(shopClosingTime)
+          : shopClosingTime
+      } as OpeningTimes
     }
   }
 

@@ -14,6 +14,7 @@ import {CategoryModifyComponent} from "./category-modify/category-modify.compone
 import {CategoryCreateComponent} from "./category-create/category-create.component";
 import {ShopCreateComponent} from "./shop-create/shop-create.component";
 import {HomeComponent} from "./home/home.component";
+import {ErrorComponent} from "./error/error.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'category/details/:id', component: CategoryDetailsComponent },
   { path: 'category/create', component: CategoryCreateComponent },
   { path: 'category/modify/:id', component: CategoryModifyComponent },
+  { path: 'error/:status', component: ErrorComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

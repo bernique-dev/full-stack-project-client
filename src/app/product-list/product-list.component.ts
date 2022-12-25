@@ -6,6 +6,7 @@ import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
 import {CategoryService} from "../category.service";
 import {Category} from "../shared/category";
 import {IMultiSelectSettings, IMultiSelectTexts} from "ngx-bootstrap-multiselect";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-product-list',
@@ -19,8 +20,8 @@ export class ProductListComponent implements OnInit {
   categories: Category[] = []
   displayedProducts: Product[] = []
 
-  @Input() categoryId : number = -1
-  @Input() shopId : number = -1
+  @Input() categoryId: number = -1
+  @Input() shopId: number = -1
 
   //  Page managing
   activePageNumber: number = 1
@@ -87,9 +88,9 @@ export class ProductListComponent implements OnInit {
     defaultTitle: "Sélectionner"
   }
 
-  queryParamString : string = ""
+  queryParamString: string = ""
 
-  constructor(private productService: ProductService, private categoryService: CategoryService) {
+  constructor(private productService: ProductService, private categoryService: CategoryService, private router: Router) {
   }
 
   ngOnInit() {
@@ -114,18 +115,22 @@ export class ProductListComponent implements OnInit {
       observable = this.productService.getProducts()
     }
 
-    observable.subscribe(products => {
-      console.log(this.categoryId + ' - ' + this.shopId + " | " + products.length)
-      this.products = products
-      this.displayedProducts = this.products
-      //  Setting min and product
-      this.minProductPrice = Math.min(...this.products.map(p => p.price))
-      this.maxProductPrice = Math.max(...this.products.map(p => p.price))
-      this.minPriceFilterValue = this.minProductPrice
-      this.maxPriceFilterValue = this.maxProductPrice
-      //
-      this.calculatePagesNumber()
-      this.displayProductsPage(1)
+    observable.subscribe({
+      next: products => {
+        this.products = products
+        this.displayedProducts = this.products
+        //  Setting min and product
+        this.minProductPrice = Math.min(...this.products.map(p => p.price))
+        this.maxProductPrice = Math.max(...this.products.map(p => p.price))
+        this.minPriceFilterValue = this.minProductPrice
+        this.maxPriceFilterValue = this.maxProductPrice
+        //
+        this.calculatePagesNumber()
+        this.displayProductsPage(1)
+      },
+      error: error => {
+        this.router.navigateByUrl('error/' + error.status)
+      }
     })
   }
 
@@ -155,7 +160,6 @@ export class ProductListComponent implements OnInit {
     this.totalNavPagesNumber = Math.ceil(this.displayedProducts.length / this.maxProductPerPage)
     this.visibleNavPages = Math.min(this.maxNavPagesNumber, this.totalNavPagesNumber)
     this.displayProductsPage(1)
-    // console.log(this.totalNavPagesNumber)
   }
 
   sortWith(sorter: ProductSorter) {

@@ -23,11 +23,16 @@ export class ProductDetailsComponent implements OnInit {
     this.route.params.subscribe(
       params => {
         this.productService.getProduct(params['id']).subscribe(
-          product => {
-            this.product = product
-            this.productVersions = {
-              [this.currentVersion]: new Translation(this.product.name, this.product.description),
-              ...product.translations
+          {
+            next: product => {
+              this.product = product
+              this.productVersions = {
+                [this.currentVersion]: new Translation(this.product.name, this.product.description),
+                ...product.translations
+              }
+            },
+            error: error => {
+              this.router.navigateByUrl('error/' + error.status)
             }
           }
         );
@@ -37,8 +42,13 @@ export class ProductDetailsComponent implements OnInit {
 
   deleteProduct() {
     this.productService.deleteProduct(this.product!).subscribe(
-      _ => {
-        this.router.navigateByUrl("products")
+      {
+        next: _ => {
+          this.router.navigateByUrl("products")
+        },
+        error: error => {
+          this.router.navigateByUrl('error/' + error.status)
+        }
       }
     )
   }

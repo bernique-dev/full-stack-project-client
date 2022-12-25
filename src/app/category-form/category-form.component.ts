@@ -17,10 +17,11 @@ export class CategoryFormComponent implements OnInit {
   });
   categoryId: number = 0
 
-  isModifying? : boolean = undefined
+  isModifying?: boolean = undefined
 
   constructor(private route: ActivatedRoute, private router: Router,
-              private categoryService: CategoryService) { }
+              private categoryService: CategoryService) {
+  }
 
   ngOnInit(): void {
 
@@ -30,8 +31,13 @@ export class CategoryFormComponent implements OnInit {
           this.categoryId = params['id']
           this.isModifying = true
 
-          this.categoryService.getCategory(this.categoryId).subscribe(category => {
-              this.categoryForm.controls['categoryName'].setValue(category!.name)
+          this.categoryService.getCategory(this.categoryId).subscribe({
+              next: category => {
+                this.categoryForm.controls['categoryName'].setValue(category!.name)
+              },
+              error: error => {
+                this.router.navigateByUrl('error/' + error.status)
+              }
             }
           )
         } else {
@@ -46,14 +52,24 @@ export class CategoryFormComponent implements OnInit {
 
 
   createProduct() {
-    this.categoryService.addCategory(this.generateCategory(0)).subscribe(
-      result => this.router.navigateByUrl('category/details/' + result)
+    this.categoryService.addCategory(this.generateCategory(0)).subscribe({
+        next: result => this.router.navigateByUrl('category/details/' + result),
+        error: error => {
+          this.router.navigateByUrl('error/' + error.status)
+        }
+      }
     )
   }
 
   modifyProduct(id: number) {
     this.categoryService.modifyCategory(this.generateCategory(id)).subscribe(
-      result => this.router.navigateByUrl('category/details/' + result)
+      {
+        next: result =>
+          this.router.navigateByUrl('category/details/' + result),
+        error: error => {
+          this.router.navigateByUrl('error/' + error.status)
+        }
+      }
     )
   }
 

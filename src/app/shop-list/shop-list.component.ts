@@ -7,6 +7,7 @@ import {DayOfWeek} from "../shared/day-of-week";
 import {Product} from "../shared/product";
 import {DAYOFWEEKNAMES} from "../shared/week-day-names";
 import {DateAdapter} from "@angular/material/core";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -17,10 +18,10 @@ import {DateAdapter} from "@angular/material/core";
 })
 export class ShopListComponent implements OnInit {
 
-  json : string = ""
-  shops : Shop[] = [];
+  json: string = ""
+  shops: Shop[] = [];
   displayedShops: Shop[] = []
-  products : Product[] = []
+  products: Product[] = []
 
   //  Page managing
   activePageNumber: number = 1
@@ -68,13 +69,13 @@ export class ShopListComponent implements OnInit {
   maxNbrProductFilterValue: number = Infinity;
   nbrProductFilter = (s: Shop) => s.productList.length >= this.minNbrProductFilterValue && s.productList.length <= this.maxNbrProductFilterValue
 
-  minCreationDateValueFilterValue : Date = new Date(-8640000000000000);
-  maxCreationDateValueFilterValue : Date = new Date(8640000000000000);
+  minCreationDateValueFilterValue: Date = new Date(-8640000000000000);
+  maxCreationDateValueFilterValue: Date = new Date(8640000000000000);
   creationDateFilter = (s: Shop) => {
     return s.creationDate >= this.minCreationDateValueFilterValue && s.creationDate <= this.maxCreationDateValueFilterValue
   }
 
-  constructor(private shopService : ShopService, private dateAdapter: DateAdapter<Date>) {
+  constructor(private shopService: ShopService, private dateAdapter: DateAdapter<Date>, private router: Router) {
     this.dateAdapter.setLocale('fr-FR');
   }
 
@@ -83,48 +84,53 @@ export class ShopListComponent implements OnInit {
   }
 
   getShops() {
-    this.shopService.getShops().subscribe(shops => {
-      let shopList = shops
-      shopList.forEach(s => {
-        let timesList = []
-        let dayCnt = 1;
-        s.creationDate = new Date(s.creationDate)
-        for (let dayTimesString of s.openingTimes.split(';')) {
-          if (dayTimesString.length > 0) {
-            let dayTimesValues = dayTimesString.split('-')
-            let openingTimeString = dayTimesValues[0]
-            let openingTimeValues = openingTimeString.split(':').map(v => Number(v))
-            let openingTime = new TimeOfDay(openingTimeValues[0], openingTimeValues[1])
+    this.shopService.getShops().subscribe({
+      next: shops => {
+        let shopList = shops
+        shopList.forEach(s => {
+          let timesList = []
+          let dayCnt = 1;
+          s.creationDate = new Date(s.creationDate)
+          for (let dayTimesString of s.openingTimes.split(';')) {
+            if (dayTimesString.length > 0) {
+              let dayTimesValues = dayTimesString.split('-')
+              let openingTimeString = dayTimesValues[0]
+              let openingTimeValues = openingTimeString.split(':').map(v => Number(v))
+              let openingTime = new TimeOfDay(openingTimeValues[0], openingTimeValues[1])
 
-            let closingTimeString = dayTimesValues[1]
-            let closingTimeValues = closingTimeString.split(':').map(v => Number(v))
-            let closingTime = new TimeOfDay(closingTimeValues[0], closingTimeValues[1])
+              let closingTimeString = dayTimesValues[1]
+              let closingTimeValues = closingTimeString.split(':').map(v => Number(v))
+              let closingTime = new TimeOfDay(closingTimeValues[0], closingTimeValues[1])
 
-            timesList.push({
-              openingTime: openingTime,
-              closingTime: closingTime
-            })
-          } else {
-            timesList.push({
-              openingTime: undefined,
-              closingTime: undefined
-            })
+              timesList.push({
+                openingTime: openingTime,
+                closingTime: closingTime
+              })
+            } else {
+              timesList.push({
+                openingTime: undefined,
+                closingTime: undefined
+              })
+            }
+            dayCnt = (dayCnt + 1) % 7
           }
-          dayCnt = (dayCnt + 1) % 7
-        }
-        s.openingTimesList = timesList
-      })
-      this.shops = shopList;
-      this.displayedShops = this.shops;
+          s.openingTimesList = timesList
+        })
+        this.shops = shopList;
+        this.displayedShops = this.shops;
 
-      this.calculatePagesNumber()
-      this.displayShopsPage(1)
+        this.calculatePagesNumber()
+        this.displayShopsPage(1)
 
-      this.minNbrProductFilterValue = Math.min(...this.shops.map(s=>s.productList.length))
-      this.maxNbrProductFilterValue = Math.max(...this.shops.map(s=>s.productList.length))
+        this.minNbrProductFilterValue = Math.min(...this.shops.map(s => s.productList.length))
+        this.maxNbrProductFilterValue = Math.max(...this.shops.map(s => s.productList.length))
 
-      this.minCreationDateValueFilterValue = new Date(Math.min(...this.shops.map(s=>s.creationDate.getTime())));
-      this.maxCreationDateValueFilterValue = new Date(Math.max(...this.shops.map(s=>s.creationDate.getTime())));
+        this.minCreationDateValueFilterValue = new Date(Math.min(...this.shops.map(s => s.creationDate.getTime())));
+        this.maxCreationDateValueFilterValue = new Date(Math.max(...this.shops.map(s => s.creationDate.getTime())));
+      },
+      error: error => {
+        this.router.navigateByUrl('error/' + error.status)
+      }
     });
   }
 

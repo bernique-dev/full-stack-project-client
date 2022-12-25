@@ -69,36 +69,42 @@ export class ProductFormComponent implements OnInit {
       this.productId = params['id']
       queryObservables.push(this.productService.getProduct(params['id']))
 
-      forkJoin(queryObservables).subscribe(results => {
-          this.isModifying = true
-          this.shops = results[0]
-          this.categories = results[1]
-          this.languages = results[2]
+      forkJoin(queryObservables).subscribe({
+          next: results => {
+            this.isModifying = true
+            this.shops = results[0]
+            this.categories = results[1]
+            this.languages = results[2]
 
-          let product: Product = results[3]
-          product!.shop = {
-            id: product!.shopId
+            let product: Product = results[3]
+            product!.shop = {
+              id: product!.shopId
+            }
+            this.categoryIndexes = product.categories.map(c1 => this.categories.findIndex(c2 => c1.id == c2.id) + 1)
+
+            this.productForm.controls['productName'].setValue(product!.name)
+            this.productForm.controls['productDescription'].setValue(product!.description)
+            this.productForm.controls['productPrice'].setValue(product!.price)
+            this.productForm.controls['productCategories'].setValue(product!.categories.map(c => c.id))
+            this.productForm.controls['productShop'].setValue(this.shops.find(s => s.id == product!.shopId))
+
+            this.languages.forEach(l => this.translations[l] = new Translation('', ''))
+            for (let prop in product.translations) {
+              let translation = product.translations[prop]
+              this.translations[prop] = new Translation(translation.translatedName, translation.translatedDescription)
+            }
+            let englishIndex = this.languages.indexOf("EN")
+            this.setCurrentTranslationLanguage(this.languages[englishIndex < 0 ? 0 : englishIndex])
+          },
+          error: error => {
+            this.router.navigateByUrl('error/' + error.status)
           }
-          this.categoryIndexes = product.categories.map(c1 => this.categories.findIndex(c2 => c1.id == c2.id) + 1)
-
-          this.productForm.controls['productName'].setValue(product!.name)
-          this.productForm.controls['productDescription'].setValue(product!.description)
-          this.productForm.controls['productPrice'].setValue(product!.price)
-          this.productForm.controls['productCategories'].setValue(product!.categories.map(c => c.id))
-          this.productForm.controls['productShop'].setValue(this.shops.find(s => s.id == product!.shopId))
-
-          this.languages.forEach(l => this.translations[l] = new Translation('', ''))
-          for (let prop in product.translations) {
-            let translation = product.translations[prop]
-            this.translations[prop] = new Translation(translation.translatedName, translation.translatedDescription)
-          }
-          let englishIndex = this.languages.indexOf("EN")
-          this.setCurrentTranslationLanguage(this.languages[englishIndex < 0 ? 0 : englishIndex])
         }
       )
     } else {
 
-      forkJoin(queryObservables).subscribe(results => {
+      forkJoin(queryObservables).subscribe({
+        next: results => {
           this.isModifying = false
           this.shops = results[0]
           this.categories = results[1]
@@ -129,21 +135,35 @@ export class ProductFormComponent implements OnInit {
           this.languages.forEach(l => this.translations[l] = new Translation('', ''))
           let englishIndex = this.languages.indexOf("EN")
           this.setCurrentTranslationLanguage(this.languages[englishIndex < 0 ? 0 : englishIndex])
+        },
+        error: error => {
+          this.router.navigateByUrl('error/' + error.status)
         }
-      )
+      })
     }
 
   }
 
   createProduct() {
-    this.productService.addProduct(this.generateProduct(0)).subscribe(
-      result => this.router.navigateByUrl('product/details/' + result)
+    this.productService.addProduct(this.generateProduct(0)).subscribe({
+        next: result =>
+          this.router.navigateByUrl('product/details/' + result),
+        error: error => {
+          this.router.navigateByUrl('error/' + error.status)
+        }
+      }
     )
   }
 
   modifyProduct(id: number) {
     this.productService.modifyProduct(this.generateProduct(id)).subscribe(
-      result => this.router.navigateByUrl('product/details/' + result)
+      {
+        next: result =>
+          this.router.navigateByUrl('product/details/' + result),
+        error: error => {
+          this.router.navigateByUrl('error/' + error.status)
+        }
+      }
     )
   }
 

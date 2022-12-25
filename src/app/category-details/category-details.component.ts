@@ -13,14 +13,19 @@ export class CategoryDetailsComponent implements OnInit {
 
   category?: Category;
 
-  constructor(private route: ActivatedRoute, private categoryService: CategoryService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private categoryService: CategoryService, private router: Router) {
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(
       params => {
-        this.categoryService.getCategory(params['id']).subscribe(
-          category => {
-            this.category = category
+        this.categoryService.getCategory(params['id']).subscribe({
+            next: category => {
+              this.category = category
+            },
+            error: error => {
+              this.router.navigateByUrl('error/' + error.status)
+            }
           }
         );
       }
@@ -28,9 +33,13 @@ export class CategoryDetailsComponent implements OnInit {
   }
 
   deleteCategory() {
-    this.categoryService.deleteCategory(this.category!).subscribe(
-      _ => {
-        this.router.navigateByUrl("categories")
+    this.categoryService.deleteCategory(this.category!).subscribe({
+        next: _ => {
+          this.router.navigateByUrl("categories")
+        },
+        error: error => {
+          this.router.navigateByUrl('error/' + error.status)
+        }
       }
     )
   }

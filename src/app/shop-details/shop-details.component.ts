@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 import {ShopService} from "../shop.service";
 import {Shop} from "../shared/shop";
 import {DayOfWeek} from "../shared/day-of-week";
@@ -14,14 +14,15 @@ import {TimeOfDay} from "../shared/time-of-day";
 export class ShopDetailsComponent implements OnInit {
 
   shop?: Shop;
-  json : string = ""
+  json: string = ""
 
-  constructor(private route: ActivatedRoute, private shopService: ShopService) { }
+  constructor(private route: ActivatedRoute, private shopService: ShopService, private router: Router) {
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(
-      params => this.shopService.getShop(params['id']).subscribe(
-        shop=> {
+      params => this.shopService.getShop(params['id']).subscribe({
+        next: shop => {
           let timesList = []
           let dayCnt = 1;
           shop.creationDate = new Date(shop.creationDate)
@@ -50,8 +51,13 @@ export class ShopDetailsComponent implements OnInit {
           }
           shop.openingTimesList = timesList
           this.shop = shop
-        })
-    )}
+        },
+        error: error => {
+          this.router.navigateByUrl('error/' + error.status)
+        }
+      })
+    )
+  }
 
   getDayFromNumber(nb: number) {
     return DayOfWeek[(nb as DayOfWeek)]

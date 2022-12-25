@@ -2,17 +2,18 @@ import {Component, OnInit} from '@angular/core';
 import {Category} from "../shared/category";
 import {CategoryService} from "../category.service";
 import {CategorySorter} from "../shared/category-sorter";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-category-list',
   templateUrl: './category-list.component.html',
-  providers: [CategoryService] ,
+  providers: [CategoryService],
   styleUrls: ['./category-list.component.css']
 })
 export class CategoryListComponent implements OnInit {
 
-  categories : Category[] = []
-  displayedCategories : Category[] = []
+  categories: Category[] = []
+  displayedCategories: Category[] = []
 
 
   //  Page managing
@@ -44,15 +45,21 @@ export class CategoryListComponent implements OnInit {
   nameFilterValue: string = "";
   nameFilter = (c: Category) => this.nameFilterValue.length > 0 ? c.name.toUpperCase().includes(this.nameFilterValue.toUpperCase()) : true
 
-  constructor(private categoryService : CategoryService) { }
+  constructor(private categoryService: CategoryService, private router: Router) {
+  }
 
   ngOnInit(): void {
 
-    this.categoryService.getCategories().subscribe(
-      categories => {
-        this.categories = categories
-        this.displayedCategories = this.categories
-        this.calculatePagesNumber()
+    this.categoryService.getCategories().subscribe({
+        next: categories => {
+          this.categories = categories
+          this.displayedCategories = this.categories
+          this.calculatePagesNumber()
+          console.log("pages number")
+        },
+        error: error => {
+          this.router.navigateByUrl('error/' + error.status)
+        }
       }
     )
 
@@ -77,7 +84,6 @@ export class CategoryListComponent implements OnInit {
     this.totalNavPagesNumber = Math.ceil(this.displayedCategories.length / this.maxCategoryPerPage)
     this.visibleNavPages = Math.min(this.maxNavPagesNumber, this.totalNavPagesNumber)
     this.displayCategoriesPage(1)
-    // console.log(this.totalNavPagesNumber)
   }
 
   sortWith(sorter: CategorySorter) {
