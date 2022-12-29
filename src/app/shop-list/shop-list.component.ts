@@ -21,7 +21,6 @@ export class ShopListComponent implements OnInit {
   json: string = ""
   shops: Shop[] = [];
   displayedShops: Shop[] = []
-  products: Product[] = []
 
   //  Page managing
   activePageNumber: number = 1
@@ -115,8 +114,10 @@ export class ShopListComponent implements OnInit {
             dayCnt = (dayCnt + 1) % 7
           }
           s.openingTimesList = timesList
+          s.nbrCategories = this.getNbrCategories(s.productList);
         })
         this.shops = shopList;
+
         this.displayedShops = this.shops;
 
         this.calculatePagesNumber()
@@ -211,4 +212,15 @@ export class ShopListComponent implements OnInit {
     this.filterShops();
   }
 
+  getNbrCategories(products: Product[]) {
+    let categories: number[]= [];
+    for (let i = 0; i < products.length; i++) {
+      for (let j = 0; j < products[i].categories.length; j++) {
+        if(!categories.find(id => products[i].categories[j].id == id)){
+          categories.push(products[i].categories[j].id)
+        }
+      }
+    }
+    return categories.length;
+  }
 }

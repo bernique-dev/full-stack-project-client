@@ -2,7 +2,6 @@ import {Product} from "./product";
 import {OpeningTimes} from "./opening-times";
 
 export interface Shop {
-
   id : number
   name : string
   isOnLeave : boolean
@@ -13,4 +12,5 @@ export interface Shop {
   productList : Product[]
   creationDate : Date
 
+  nbrCategories?: number;
 }
