@@ -4,14 +4,14 @@
     <h2>{{shop.name}}</h2>
     <a class="btn btn-primary" href="shop/modify/{{ shop.id }}">Modifier</a>
   </div>
-  <p class="text-center">Creation date: {{shop.creationDate.getDate()}}/{{shop.creationDate.getMonth()+1}}/{{shop.creationDate.getFullYear()}}</p>
+  <p class="text-center">Date de création: {{shop.creationDate.getDate()}}/{{shop.creationDate.getMonth()+1}}/{{shop.creationDate.getFullYear()}}</p>
   <div>
 
     <div class="d-flex flex-column align-items-center">
       <p *ngIf="shop.isOnLeave; else isNotOnLeave">En congé</p>
     </div>
 
-  <h4>Schedule</h4>
+  <h4>Horaires</h4>
     <div class="d-inline-flex flex-row gap-4">
       <ng-container  *ngFor="let openingTimes of shop.openingTimesList; let i = index">
         <div>

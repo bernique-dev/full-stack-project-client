@@ -4,6 +4,7 @@ import {ShopService} from "../shop.service";
 import {Shop} from "../shared/shop";
 import {DayOfWeek} from "../shared/day-of-week";
 import {TimeOfDay} from "../shared/time-of-day";
+import {DAYOFWEEKNAMES} from "../shared/week-day-names";
 
 @Component({
   selector: 'app-shop-details',
@@ -14,6 +15,7 @@ import {TimeOfDay} from "../shared/time-of-day";
 export class ShopDetailsComponent implements OnInit {
 
   shop?: Shop;
+  DAYOFWEEKNAMES = DAYOFWEEKNAMES
   json: string = ""
 
   constructor(private route: ActivatedRoute, private shopService: ShopService, private router: Router) {
@@ -60,7 +62,7 @@ export class ShopDetailsComponent implements OnInit {
   }
 
   getDayFromNumber(nb: number) {
-    return DayOfWeek[(nb as DayOfWeek)]
+    return DAYOFWEEKNAMES.get(nb as DayOfWeek)
   }
 
 }
